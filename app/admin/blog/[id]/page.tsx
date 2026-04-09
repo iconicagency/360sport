@@ -1,22 +1,52 @@
 'use client';
 
-import { useState } from 'react';
-import { collection, addDoc } from 'firebase/firestore';
-import { db, auth } from '@/lib/firebase';
+import { useState, useEffect, use } from 'react';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 
-export default function AddBlogPost() {
+export default function EditBlogPost({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params);
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
     excerpt: '',
     content: '',
-    category: '',
     image: '',
+    date: '',
+    category: '',
   });
+
+  useEffect(() => {
+    async function fetchPost() {
+      try {
+        const docRef = doc(db, 'blogPosts', id);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          setFormData({
+            title: data.title || '',
+            excerpt: data.excerpt || '',
+            content: data.content || '',
+            image: data.image || '',
+            date: data.date || '',
+            category: data.category || '',
+          });
+        } else {
+          router.push('/admin/blog');
+        }
+      } catch (error) {
+        console.error("Error fetching blog post:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchPost();
+  }, [id, router]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -25,45 +55,48 @@ export default function AddBlogPost() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setSaving(true);
 
     try {
-      const date = new Date();
-      const formattedDate = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
-      
-      await addDoc(collection(db, 'blogPosts'), {
+      await updateDoc(doc(db, 'blogPosts', id), {
         title: formData.title,
         excerpt: formData.excerpt,
         content: formData.content,
-        category: formData.category,
         image: formData.image,
-        date: formattedDate,
-        createdAt: date.toISOString(),
-        authorId: auth.currentUser?.uid || 'unknown'
+        date: formData.date,
+        category: formData.category,
       });
       
       router.push('/admin/blog');
     } catch (error) {
-      console.error("Error adding blog post:", error);
-      alert("Failed to add blog post. See console for details.");
+      console.error("Error updating blog post:", error);
+      alert("Failed to update blog post. See console for details.");
     } finally {
-      setLoading(false);
+      setSaving(false);
     }
   };
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <Loader2 className="animate-spin h-12 w-12 text-blue-600" />
+      </div>
+    );
+  }
+
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-3xl mx-auto">
       <div className="flex items-center mb-8">
         <Link href="/admin/blog" className="text-gray-500 hover:text-gray-900 mr-4">
           <ArrowLeft className="w-6 h-6" />
         </Link>
-        <h1 className="text-3xl font-bold text-gray-900">Add New Blog Post</h1>
+        <h1 className="text-3xl font-bold text-gray-900">Edit Blog Post</h1>
       </div>
 
       <div className="bg-white rounded-lg shadow-sm p-8">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">Title *</label>
+            <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">Post Title *</label>
             <input
               type="text"
               id="title"
@@ -81,11 +114,10 @@ export default function AddBlogPost() {
               id="excerpt"
               name="excerpt"
               required
-              rows={3}
+              rows={2}
               value={formData.excerpt}
               onChange={handleChange}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-              placeholder="A short summary of the post..."
             ></textarea>
           </div>
 
@@ -95,11 +127,10 @@ export default function AddBlogPost() {
               id="content"
               name="content"
               required
-              rows={12}
+              rows={10}
               value={formData.content}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
-              placeholder="Write your post content here. You can use HTML tags."
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
             ></textarea>
           </div>
 
@@ -121,18 +152,32 @@ export default function AddBlogPost() {
               </select>
             </div>
             <div>
-              <label htmlFor="image" className="block text-sm font-medium text-gray-700 mb-1">Cover Image URL *</label>
+              <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-1">Display Date *</label>
               <input
-                type="url"
-                id="image"
-                name="image"
+                type="text"
+                id="date"
+                name="date"
                 required
-                placeholder="https://example.com/image.jpg"
-                value={formData.image}
+                placeholder="11.09.2025"
+                value={formData.date}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
+          </div>
+
+          <div>
+            <label htmlFor="image" className="block text-sm font-medium text-gray-700 mb-1">Image URL *</label>
+            <input
+              type="url"
+              id="image"
+              name="image"
+              required
+              placeholder="https://example.com/image.jpg"
+              value={formData.image}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+            />
           </div>
 
           <div className="flex justify-end pt-4">
@@ -144,16 +189,16 @@ export default function AddBlogPost() {
             </Link>
             <button
               type="submit"
-              disabled={loading}
+              disabled={saving}
               className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition disabled:opacity-50 flex items-center"
             >
-              {loading ? (
+              {saving ? (
                 <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white mr-2"></div>
-                  Publishing...
+                  <Loader2 className="animate-spin h-4 w-4 mr-2" />
+                  Updating...
                 </>
               ) : (
-                'Publish Post'
+                'Update Post'
               )}
             </button>
           </div>

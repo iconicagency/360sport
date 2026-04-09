@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { collection, getCountFromServer } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import { Package, FileText, ShoppingCart, Users } from 'lucide-react';
+import { Package, FileText, ShoppingCart, Users, Lock } from 'lucide-react';
 import Link from 'next/link';
 import BootstrapButton from '@/components/admin/BootstrapButton';
 
@@ -46,7 +46,7 @@ export default function AdminDashboard() {
     { name: 'Total Products', value: stats.products, icon: Package, color: 'bg-blue-500', link: '/admin/products' },
     { name: 'Blog Posts', value: stats.blogPosts, icon: FileText, color: 'bg-green-500', link: '/admin/blog' },
     { name: 'Orders', value: stats.orders, icon: ShoppingCart, color: 'bg-purple-500', link: '/admin/orders' },
-    { name: 'Users', value: stats.users, icon: Users, color: 'bg-orange-500', link: '#' },
+    { name: 'Site Settings', value: 'Configure', icon: Lock, color: 'bg-gray-700', link: '/admin/settings' },
   ];
 
   return (

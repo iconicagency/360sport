@@ -1,7 +1,11 @@
+'use client';
 import Link from 'next/link';
 import { Facebook, Instagram, Youtube, MapPin, Phone, Mail } from 'lucide-react';
+import { useSettings } from './SettingsProvider';
 
 export default function Footer() {
+  const { settings } = useSettings();
+
   return (
     <footer className="bg-gray-900 text-gray-300 pt-16 pb-8">
       <div className="container mx-auto px-4">
@@ -15,16 +19,16 @@ export default function Footer() {
               <span className="font-bold text-xl tracking-tight text-white">SPORT</span>
             </div>
             <p className="text-sm leading-relaxed mb-6">
-              360 SPORT là thương hiệu thức uống bổ sung năng lượng, bù khoáng, bù điện giải hàng đầu dành cho người chơi thể thao tại Việt Nam.
+              {settings.footerDescription}
             </p>
             <div className="flex gap-4">
-              <a href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-blue hover:text-white transition-colors">
+              <a href={settings.facebookUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-blue hover:text-white transition-colors">
                 <Facebook className="h-5 w-5" />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-blue hover:text-white transition-colors">
+              <a href={settings.instagramUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-blue hover:text-white transition-colors">
                 <Instagram className="h-5 w-5" />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-blue hover:text-white transition-colors">
+              <a href={settings.youtubeUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-blue hover:text-white transition-colors">
                 <Youtube className="h-5 w-5" />
               </a>
             </div>
@@ -36,15 +40,15 @@ export default function Footer() {
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <MapPin className="h-5 w-5 text-brand-blue shrink-0 mt-0.5" />
-                <span className="text-sm">123 Đường Thể Thao, Quận 1, TP. Hồ Chí Minh</span>
+                <span className="text-sm">{settings.contactAddress}</span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="h-5 w-5 text-brand-blue shrink-0" />
-                <span className="text-sm">Hotline: 1900 360 360</span>
+                <span className="text-sm">Hotline: {settings.contactPhone}</span>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="h-5 w-5 text-brand-blue shrink-0" />
-                <span className="text-sm">Email: contact@360sport.com.vn</span>
+                <span className="text-sm">Email: {settings.contactEmail}</span>
               </li>
             </ul>
           </div>

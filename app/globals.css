@@ -1,13 +1,17 @@
 @import "tailwindcss";
 
 @theme {
+  --color-brand-blue: var(--color-brand-blue);
+  --color-brand-orange: var(--color-brand-orange);
+  --color-brand-light-blue: var(--color-brand-light-blue);
+  --color-brand-dark-blue: var(--color-brand-dark-blue);
+}
+
+:root {
   --color-brand-blue: #004182;
   --color-brand-orange: #F7941D;
   --color-brand-light-blue: #00AEEF;
   --color-brand-dark-blue: #002D5A;
-}
-
-:root {
   --primary: var(--color-brand-blue);
   --accent: var(--color-brand-orange);
 }

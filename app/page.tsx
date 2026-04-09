@@ -11,27 +11,30 @@ import { ArrowRight, Zap, Shield, Truck, Award, Hexagon, Activity, Leaf, MapPin 
 import { useState, useEffect } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
+import { useSettings } from "@/components/SettingsProvider";
 
 export default function Home() {
   const [dbProducts, setDbProducts] = useState<any[]>([]);
+  const [dbPosts, setDbPosts] = useState<any[]>([]);
+  const { settings } = useSettings();
 
   useEffect(() => {
-    async function fetchProducts() {
+    async function fetchData() {
       try {
-        const querySnapshot = await getDocs(collection(db, 'products'));
-        const fetchedProducts = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-        setDbProducts(fetchedProducts);
+        const productsSnapshot = await getDocs(collection(db, 'products'));
+        setDbProducts(productsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+        
+        const blogSnapshot = await getDocs(collection(db, 'blogPosts'));
+        setDbPosts(blogSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
       } catch (error) {
-        console.error("Error fetching products:", error);
+        console.error("Error fetching data:", error);
       }
     }
-    fetchProducts();
+    fetchData();
   }, []);
 
   const allProducts = [...dbProducts, ...products].slice(0, 4);
+  const allPosts = dbPosts.length > 0 ? dbPosts.slice(0, 3) : [];
 
   return (
     <div className="min-h-screen flex flex-col font-sans text-gray-900 bg-gray-50">
@@ -42,7 +45,7 @@ export default function Home() {
         <section className="relative bg-brand-blue text-white overflow-hidden">
           <div className="absolute inset-0 z-0">
             <Image 
-              src="https://picsum.photos/seed/360sport-hero/1920/800" 
+              src={settings.heroImage} 
               alt="Hero Background" 
               fill 
               className="object-cover opacity-30"
@@ -56,12 +59,11 @@ export default function Home() {
               <div className="inline-block bg-brand-orange text-white px-3 py-1 rounded-full text-xs font-bold tracking-wider mb-4">
                 SẢN PHẨM MỚI
               </div>
-              <h1 className="text-3xl md:text-5xl font-extrabold leading-tight mb-4 tracking-tight">
-                THỨC UỐNG TĂNG LỰC <br/>
-                <span className="text-white drop-shadow-[0_0_10px_rgba(0,174,239,0.8)]">BÙ KHOÁNG BÙ ĐIỆN GIẢI</span>
+              <h1 className="text-3xl md:text-5xl font-extrabold leading-tight mb-4 tracking-tight uppercase">
+                {settings.heroTitle}
               </h1>
               <p className="text-base md:text-lg text-blue-50 mb-8 leading-relaxed max-w-xl">
-                Sản phẩm 360 SPORT được nghiên cứu dựa trên thể trạng và nhu cầu của người Việt. Bổ sung năng lượng tức thì, hỗ trợ phục hồi cơ bắp sau tập luyện.
+                {settings.heroSubtitle}
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link 
@@ -240,59 +242,29 @@ export default function Home() {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              {/* Article 1 */}
-              <Link href="/blog/1" className="group bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col h-full">
-                <div className="relative aspect-[4/3] bg-gray-100 overflow-hidden">
-                  <Image 
-                    src="https://picsum.photos/seed/blog1/600/450" 
-                    alt="Blog 1" 
-                    fill 
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
+              {allPosts.length > 0 ? allPosts.map((post) => (
+                <Link key={post.id} href={`/blog/${post.id}`} className="group bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col h-full">
+                  <div className="relative aspect-[4/3] bg-gray-100 overflow-hidden">
+                    <Image 
+                      src={post.image} 
+                      alt={post.title} 
+                      fill 
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      referrerPolicy="no-referrer"
+                    />
+                  </div>
+                  <div className="p-6 flex flex-col flex-grow">
+                    <div className="text-xs text-gray-400 mb-3">{post.date}</div>
+                    <h3 className="font-bold text-lg text-gray-500 group-hover:text-brand-blue transition-colors leading-snug line-clamp-2">
+                      {post.title}
+                    </h3>
+                  </div>
+                </Link>
+              )) : (
+                <div className="col-span-3 text-center py-12 text-gray-500">
+                  Đang cập nhật bài viết mới nhất...
                 </div>
-                <div className="p-6 flex flex-col flex-grow">
-                  <div className="text-xs text-gray-400 mb-3">11.09.2025</div>
-                  <h3 className="font-bold text-lg text-gray-500 group-hover:text-brand-blue transition-colors leading-snug">
-                    360Sport đồng hành cùng những nhà vô địch Ultra Trail Yên Tử 2025: Tôn vinh sức mạnh bền bỉ
-                  </h3>
-                </div>
-              </Link>
-
-              {/* Article 2 */}
-              <Link href="/blog/2" className="group bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col h-full">
-                <div className="relative aspect-[4/3] bg-gray-100 overflow-hidden">
-                  <Image 
-                    src="https://picsum.photos/seed/blog2/600/450" 
-                    alt="Blog 2" 
-                    fill 
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                </div>
-                <div className="p-6 flex flex-col flex-grow">
-                  <div className="text-xs text-gray-400 mb-3">11.09.2025</div>
-                  <h3 className="font-bold text-lg text-gray-500 group-hover:text-brand-blue transition-colors leading-snug">
-                    Tinh thần bền bỉ tại Ultra Trail Yên Tử 2025 – Khi 360Sport tiếp sức cho từng bước chạy
-                  </h3>
-                </div>
-              </Link>
-
-              {/* Article 3 */}
-              <Link href="/blog/3" className="group bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col h-full">
-                <div className="relative aspect-[4/3] bg-gray-100 overflow-hidden">
-                  <Image 
-                    src="https://picsum.photos/seed/blog3/600/450" 
-                    alt="Blog 3" 
-                    fill 
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                </div>
-                <div className="p-6 flex flex-col flex-grow">
-                  <div className="text-xs text-gray-400 mb-3">11.09.2025</div>
-                  <h3 className="font-bold text-lg text-gray-500 group-hover:text-brand-blue transition-colors leading-snug">
-                    360Sport đồng hành cùng Ultra Trail Yên Tử 2025: Tiếp sức hơn 1.000 vận động viên khám phá di sản
-                  </h3>
-                </div>
-              </Link>
+              )}
             </div>
             
             <div className="mt-12 text-center">

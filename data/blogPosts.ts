@@ -43,5 +43,32 @@ export const blogPosts = [
     image: "https://picsum.photos/seed/blog5/800/500", 
     date: "21/03/2025",
     category: "Kiến thức"
+  },
+  { 
+    id: "6", 
+    title: "Bí quyết phục hồi cơ bắp sau khi chạy bộ đường dài", 
+    excerpt: "Chạy bộ đường dài đòi hỏi cơ thể phải hoạt động với cường độ cao. Việc phục hồi đúng cách là chìa khóa để duy trì phong độ...", 
+    content: "Chạy bộ đường dài đòi hỏi cơ thể phải hoạt động với cường độ cao. Việc phục hồi đúng cách là chìa khóa để duy trì phong độ và tránh chấn thương. 360 SPORT cung cấp các dưỡng chất cần thiết để hỗ trợ quá trình này.",
+    image: "https://picsum.photos/seed/blog6/800/500", 
+    date: "15/03/2025",
+    category: "Kiến thức"
+  },
+  { 
+    id: "7", 
+    title: "Tầm quan trọng của việc bù điện giải trong tập luyện", 
+    excerpt: "Khi tập luyện, cơ thể mất đi một lượng lớn nước và khoáng chất qua mồ hôi. Bù điện giải kịp thời giúp duy trì sự cân bằng...", 
+    content: "Khi tập luyện, cơ thể mất đi một lượng lớn nước và khoáng chất qua mồ hôi. Bù điện giải kịp thời giúp duy trì sự cân bằng và ngăn ngừa mệt mỏi.",
+    image: "https://picsum.photos/seed/blog7/800/500", 
+    date: "10/03/2025",
+    category: "Dinh dưỡng"
+  },
+  { 
+    id: "8", 
+    title: "360 SPORT ra mắt dòng sản phẩm mới: Năng lượng bùng nổ", 
+    excerpt: "Chúng tôi tự hào giới thiệu dòng sản phẩm mới với công thức cải tiến, giúp bạn bứt phá mọi giới hạn trong tập luyện...", 
+    content: "Chúng tôi tự hào giới thiệu dòng sản phẩm mới với công thức cải tiến, giúp bạn bứt phá mọi giới hạn trong tập luyện. Hãy thử ngay hôm nay!",
+    image: "https://picsum.photos/seed/blog8/800/500", 
+    date: "05/03/2025",
+    category: "Sản phẩm mới"
   }
 ];

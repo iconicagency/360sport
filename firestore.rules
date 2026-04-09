@@ -49,6 +49,22 @@ service cloud.firestore {
     //   - contactPhone: string (required)
     //   - createdAt: string (required)
     //
+    // Collection: settings
+    // Document ID: {settingId}
+    // Fields:
+    //   - brandBlue: string
+    //   - brandOrange: string
+    //   - heroTitle: string
+    //   - heroSubtitle: string
+    //   - heroImage: string
+    //   - contactPhone: string
+    //   - contactEmail: string
+    //   - contactAddress: string
+    //   - facebookUrl: string
+    //   - instagramUrl: string
+    //   - youtubeUrl: string
+    //   - footerDescription: string
+    //
     // ===============================================================
 
     // ===============================================================
@@ -162,6 +178,11 @@ service cloud.firestore {
       allow update: if isAuthenticated() && isValidOrder(request.resource.data) && 
                     ((isOwner(resource.data.userId) && request.resource.data.userId == resource.data.userId && request.resource.data.status == 'cancelled') || isAdmin());
       allow delete: if isAdmin();
+    }
+
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if isAdmin();
     }
   }
 }

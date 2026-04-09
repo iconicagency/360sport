@@ -23,24 +23,28 @@ export default function BootstrapButton() {
 
       // Bootstrap Products
       const productsSnap = await getDocs(collection(db, 'products'));
-      if (productsSnap.empty) {
-        products.forEach((product) => {
+      const existingProductNames = new Set(productsSnap.docs.map(doc => doc.data().name));
+      
+      products.forEach((product) => {
+        if (!existingProductNames.has(product.name)) {
           const newDocRef = doc(collection(db, 'products'));
           batch.set(newDocRef, {
             ...product,
             id: newDocRef.id,
-            description: product.name, // Fallback description
+            description: product.name,
             stock: 100,
             createdAt: new Date().toISOString()
           });
           count++;
-        });
-      }
+        }
+      });
 
       // Bootstrap Blog Posts
       const blogSnap = await getDocs(collection(db, 'blogPosts'));
-      if (blogSnap.empty) {
-        blogPosts.forEach((post) => {
+      const existingBlogTitles = new Set(blogSnap.docs.map(doc => doc.data().title));
+      
+      blogPosts.forEach((post) => {
+        if (!existingBlogTitles.has(post.title)) {
           const newDocRef = doc(collection(db, 'blogPosts'));
           batch.set(newDocRef, {
             ...post,
@@ -50,8 +54,8 @@ export default function BootstrapButton() {
             authorId: 'system'
           });
           count++;
-        });
-      }
+        }
+      });
 
       if (count > 0) {
         await batch.commit();

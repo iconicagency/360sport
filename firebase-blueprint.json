@@ -71,6 +71,25 @@
         "createdAt": { "type": "string", "format": "date-time" }
       },
       "required": ["userId", "items", "totalAmount", "status", "shippingAddress", "contactPhone", "createdAt"]
+    },
+    "SiteSettings": {
+      "title": "SiteSettings",
+      "description": "Global configuration for the website appearance and content.",
+      "type": "object",
+      "properties": {
+        "brandBlue": { "type": "string", "description": "Primary brand color (hex)" },
+        "brandOrange": { "type": "string", "description": "Secondary brand color (hex)" },
+        "heroTitle": { "type": "string" },
+        "heroSubtitle": { "type": "string" },
+        "heroImage": { "type": "string", "format": "uri" },
+        "contactPhone": { "type": "string" },
+        "contactEmail": { "type": "string" },
+        "contactAddress": { "type": "string" },
+        "facebookUrl": { "type": "string", "format": "uri" },
+        "instagramUrl": { "type": "string", "format": "uri" },
+        "youtubeUrl": { "type": "string", "format": "uri" },
+        "footerDescription": { "type": "string" }
+      }
     }
   },
   "firestore": {
@@ -89,6 +108,10 @@
     "/orders/{orderId}": {
       "schema": { "$ref": "#/entities/Order" },
       "description": "Stores customer orders."
+    },
+    "/settings/{settingId}": {
+      "schema": { "$ref": "#/entities/SiteSettings" },
+      "description": "Stores global site settings."
     }
   }
 }
