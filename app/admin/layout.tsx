@@ -7,11 +7,12 @@ import { LayoutDashboard, Package, FileText, ShoppingCart, LogOut, Mail, Lock, U
 import { useState } from 'react';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  const { user, isAdmin, loading, signInWithGoogle, loginWithEmail, registerWithEmail, logout } = useAuth();
+  const { user, isAdmin, loading, signInWithGoogle, loginWithEmail, registerWithEmail, resetPassword, logout } = useAuth();
   const pathname = usePathname();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [authError, setAuthError] = useState('');
+  const [authMessage, setAuthMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [isRegistering, setIsRegistering] = useState(false);
@@ -19,6 +20,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setAuthError('');
+    setAuthMessage('');
     setIsSubmitting(true);
     try {
       if (isRegistering) {
@@ -27,7 +29,29 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         await loginWithEmail(email, password);
       }
     } catch (error: any) {
-      setAuthError(error.message || 'Failed to authenticate');
+      if (error.code === 'auth/invalid-credential') {
+        setAuthError('Email hoặc mật khẩu không đúng. Nếu bạn đã từng đăng nhập bằng Google, hãy chọn "Google Account" ở dưới.');
+      } else {
+        setAuthError(error.message || 'Failed to authenticate');
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleResetPassword = async () => {
+    if (!email) {
+      setAuthError('Vui lòng nhập email để đặt lại mật khẩu.');
+      return;
+    }
+    setAuthError('');
+    setAuthMessage('');
+    setIsSubmitting(true);
+    try {
+      await resetPassword(email);
+      setAuthMessage('Yêu cầu đặt lại mật khẩu đã được gửi đến email của bạn.');
+    } catch (error: any) {
+      setAuthError(error.message || 'Failed to send reset email');
     } finally {
       setIsSubmitting(false);
     }
@@ -97,6 +121,22 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
             {authError && (
               <p className="text-red-500 text-sm bg-red-50 p-2 rounded border border-red-100">{authError}</p>
+            )}
+
+            {authMessage && (
+              <p className="text-green-600 text-sm bg-green-50 p-2 rounded border border-green-100">{authMessage}</p>
+            )}
+
+            {!isRegistering && (
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={handleResetPassword}
+                  className="text-sm text-blue-600 hover:underline"
+                >
+                  Quên mật khẩu?
+                </button>
+              </div>
             )}
 
             <button
