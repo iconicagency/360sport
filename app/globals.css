@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @theme {
   --color-brand-blue: var(--color-brand-blue);
@@ -14,4 +15,8 @@
   --color-brand-dark-blue: #002D5A;
   --primary: var(--color-brand-blue);
   --accent: var(--color-brand-orange);
+}
+
+@utility whitespace-pre-line {
+  white-space: pre-line;
 }
