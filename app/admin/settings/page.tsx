@@ -3,12 +3,14 @@
 import { useState, useEffect } from 'react';
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import { Save, Loader2, Image as ImageIcon, Phone, Mail, MapPin, Facebook, Instagram, Youtube, Palette, Type, Layout } from 'lucide-react';
+import { Save, Loader2, Image as ImageIcon, Phone, Mail, MapPin, Facebook, Instagram, Youtube, Palette, Type, Layout, Globe } from 'lucide-react';
 import ImageUpload from '@/components/admin/ImageUpload';
 
 interface SiteSettings {
   brandBlue: string;
   brandOrange: string;
+  logoImage: string;
+  faviconImage: string;
   heroTitle: string;
   heroSubtitle: string;
   heroImage: string;
@@ -29,7 +31,7 @@ export default function SettingsPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [settings, setSettings] = useState<SiteSettings | null>(null);
-  const [activeTab, setActiveTab] = useState<'general' | 'home' | 'contact' | 'social'>('general');
+  const [activeTab, setActiveTab] = useState<'general' | 'home' | 'contact' | 'social' | 'seo'>('general');
 
   useEffect(() => {
     async function fetchSettings() {
@@ -43,6 +45,8 @@ export default function SettingsPage() {
           const defaultSettings: SiteSettings = {
             brandBlue: '#004182',
             brandOrange: '#f58220',
+            logoImage: '/logo.png',
+            faviconImage: '/favicon.ico',
             heroTitle: 'THỨC UỐNG TĂNG LỰC BÙ KHOÁNG BÙ ĐIỆN GIẢI',
             heroSubtitle: 'Sản phẩm 360 SPORT được nghiên cứu dựa trên thể trạng và nhu cầu của người Việt. Bổ sung năng lượng tức thì, hỗ trợ phục hồi cơ bắp sau tập luyện.',
             heroImage: 'https://picsum.photos/seed/360sport-hero/1920/800',
@@ -150,6 +154,14 @@ export default function SettingsPage() {
           >
             <Facebook className="w-4 h-4" /> Mạng xã hội
           </button>
+          <button
+            onClick={() => setActiveTab('seo')}
+            className={`px-6 py-4 text-sm font-medium flex items-center gap-2 border-b-2 transition-colors ${
+              activeTab === 'seo' ? 'border-blue-600 text-blue-600 bg-blue-50/50' : 'border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+            }`}
+          >
+            <Globe className="w-4 h-4" /> SEO
+          </button>
         </div>
 
         <div className="p-8">
@@ -157,6 +169,24 @@ export default function SettingsPage() {
             <div className="space-y-8">
               {activeTab === 'general' && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="space-y-4">
+                    <label className="block text-sm font-semibold text-gray-700">Logo thương hiệu</label>
+                    <ImageUpload
+                      label=""
+                      currentImageUrl={settings.logoImage}
+                      onUploadComplete={(url) => handleImageChange('logoImage', url)}
+                      folder="settings"
+                    />
+                  </div>
+                  <div className="space-y-4">
+                    <label className="block text-sm font-semibold text-gray-700">Favicon</label>
+                    <ImageUpload
+                      label=""
+                      currentImageUrl={settings.faviconImage}
+                      onUploadComplete={(url) => handleImageChange('faviconImage', url)}
+                      folder="settings"
+                    />
+                  </div>
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">Màu thương hiệu (Xanh)</label>
                     <div className="flex gap-4">
@@ -232,6 +262,18 @@ export default function SettingsPage() {
                           className="w-full px-3 py-2 border rounded-md"
                         ></textarea>
                       </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-semibold text-gray-700 mb-2">Nút Hero 1</label>
+                          <input type="text" name="heroButton1Text" value={settings.heroButton1Text} onChange={handleChange} className="w-full px-3 py-2 border rounded-md mb-2" placeholder="Text" />
+                          <input type="text" name="heroButton1Link" value={settings.heroButton1Link} onChange={handleChange} className="w-full px-3 py-2 border rounded-md" placeholder="Link" />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-semibold text-gray-700 mb-2">Nút Hero 2</label>
+                          <input type="text" name="heroButton2Text" value={settings.heroButton2Text} onChange={handleChange} className="w-full px-3 py-2 border rounded-md mb-2" placeholder="Text" />
+                          <input type="text" name="heroButton2Link" value={settings.heroButton2Link} onChange={handleChange} className="w-full px-3 py-2 border rounded-md" placeholder="Link" />
+                        </div>
+                      </div>
                     </div>
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">Ảnh Hero</label>
@@ -244,7 +286,7 @@ export default function SettingsPage() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-8 border-t">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 border-t">
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">Ảnh phần &quot;Về 360 Sport&quot;</label>
                       <ImageUpload
@@ -255,13 +297,28 @@ export default function SettingsPage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">Ảnh Banner (Chạy bộ)</label>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">Tiêu đề Banner</label>
+                      <input type="text" name="bannerTitle" value={settings.bannerTitle} onChange={handleChange} className="w-full px-3 py-2 border rounded-md mb-2" />
+                      <textarea name="bannerDesc" rows={3} value={settings.bannerDesc} onChange={handleChange} className="w-full px-3 py-2 border rounded-md mb-2"></textarea>
+                      <input type="text" name="bannerButtonText" value={settings.bannerButtonText} onChange={handleChange} className="w-full px-3 py-2 border rounded-md" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">Ảnh Banner</label>
                       <ImageUpload
                         label=""
                         currentImageUrl={settings.bannerImage}
                         onUploadComplete={(url) => handleImageChange('bannerImage', url)}
                         folder="settings"
                       />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 border-t">
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">Tiêu đề Banner Đối tác</label>
+                      <input type="text" name="partnerBannerTitle" value={settings.partnerBannerTitle} onChange={handleChange} className="w-full px-3 py-2 border rounded-md mb-2" />
+                      <textarea name="partnerBannerDesc" rows={3} value={settings.partnerBannerDesc} onChange={handleChange} className="w-full px-3 py-2 border rounded-md mb-2"></textarea>
+                      <input type="text" name="partnerBannerButtonText" value={settings.partnerBannerButtonText} onChange={handleChange} className="w-full px-3 py-2 border rounded-md" />
                     </div>
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">Ảnh Banner Đối tác</label>
@@ -272,8 +329,15 @@ export default function SettingsPage() {
                         folder="settings"
                       />
                     </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 border-t">
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">Ảnh Nổi bật Sản phẩm (Vận động viên)</label>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">Sản phẩm nổi bật (ID, cách nhau bằng dấu phẩy)</label>
+                      <input type="text" name="featuredProductIds" value={Array.isArray(settings.featuredProductIds) ? settings.featuredProductIds.join(',') : ''} onChange={(e) => setSettings({...settings, featuredProductIds: e.target.value.split(',')})} className="w-full px-3 py-2 border rounded-md" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">Ảnh Nổi bật Sản phẩm</label>
                       <ImageUpload
                         label=""
                         currentImageUrl={settings.productHighlightImage}
@@ -363,6 +427,31 @@ export default function SettingsPage() {
                       onChange={handleChange}
                       className="w-full px-3 py-2 border rounded-md"
                     />
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'seo' && (
+                <div className="grid grid-cols-1 gap-8">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Tiêu đề SEO</label>
+                    <input
+                      type="text"
+                      name="seoTitle"
+                      value={settings.seoTitle}
+                      onChange={handleChange}
+                      className="w-full px-3 py-2 border rounded-md"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Mô tả SEO</label>
+                    <textarea
+                      name="seoDescription"
+                      rows={3}
+                      value={settings.seoDescription}
+                      onChange={handleChange}
+                      className="w-full px-3 py-2 border rounded-md"
+                    ></textarea>
                   </div>
                 </div>
               )}

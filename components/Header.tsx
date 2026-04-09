@@ -3,9 +3,12 @@ import Link from 'next/link';
 import { Search, ShoppingCart, Menu, User } from 'lucide-react';
 import { useCart } from './CartProvider';
 import { useEffect, useState } from 'react';
+import { useSettings } from './SettingsProvider';
+import Image from 'next/image';
 
 export default function Header() {
   const { totalItems, toggleCart } = useCart();
+  const { settings } = useSettings();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -28,8 +31,8 @@ export default function Header() {
 
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <div className="w-10 h-10 bg-brand-blue rounded-full flex items-center justify-center text-white font-bold text-lg">
-            360
+          <div className="relative w-10 h-10">
+            <Image src={settings.logoImage} alt="Logo" fill className="object-contain" />
           </div>
           <span className="font-bold text-xl tracking-tight hidden sm:block text-brand-blue">SPORT</span>
         </Link>

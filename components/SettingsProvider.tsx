@@ -7,13 +7,28 @@ import { db } from '@/lib/firebase';
 interface SiteSettings {
   brandBlue: string;
   brandOrange: string;
+  logoImage: string;
+  faviconImage: string;
+  seoTitle: string;
+  seoDescription: string;
   heroTitle: string;
   heroSubtitle: string;
   heroImage: string;
+  heroButton1Text: string;
+  heroButton1Link: string;
+  heroButton2Text: string;
+  heroButton2Link: string;
   aboutImage: string;
   bannerImage: string;
+  bannerTitle: string;
+  bannerDesc: string;
+  bannerButtonText: string;
   partnerBannerImage: string;
+  partnerBannerTitle: string;
+  partnerBannerDesc: string;
+  partnerBannerButtonText: string;
   productHighlightImage: string;
+  featuredProductIds: string[];
   contactPhone: string;
   contactEmail: string;
   contactAddress: string;
@@ -26,13 +41,28 @@ interface SiteSettings {
 const defaultSettings: SiteSettings = {
   brandBlue: '#004182',
   brandOrange: '#f58220',
+  logoImage: '/logo.png',
+  faviconImage: '/favicon.ico',
+  seoTitle: '360 Sport - Thức uống tăng lực bù khoáng, bù điện giải',
+  seoDescription: '360 SPORT - Thức uống tăng lực bù khoáng, bù điện giải hàng đầu Việt Nam. Hỗ trợ phục hồi năng lượng và cơ bắp sau tập luyện.',
   heroTitle: 'THỨC UỐNG TĂNG LỰC BÙ KHOÁNG BÙ ĐIỆN GIẢI',
   heroSubtitle: 'Sản phẩm 360 SPORT được nghiên cứu dựa trên thể trạng và nhu cầu của người Việt. Bổ sung năng lượng tức thì, hỗ trợ phục hồi cơ bắp sau tập luyện.',
   heroImage: 'https://picsum.photos/seed/360sport-hero/1920/800',
+  heroButton1Text: 'Mua Ngay',
+  heroButton1Link: '#products',
+  heroButton2Text: 'Tìm Hiểu Thêm',
+  heroButton2Link: '/about',
   aboutImage: 'https://picsum.photos/seed/soccer-kick/1000/1000',
   bannerImage: 'https://picsum.photos/seed/runner-blue/1920/800',
+  bannerTitle: 'THỨC UỐNG BỔ SUNG NĂNG LƯỢNG TĂNG LỰC, BÙ KHOÁNG, BÙ ĐIỆN GIẢI',
+  bannerDesc: 'Sản phẩm 360 SPORT được nghiên cứu dựa trên thể trạng và nhu cầu của người Việt. Với các thành phần tối ưu 360 SPORT là sản phẩm tăng lực, bù khoáng, bù điện giải đầu tiên trên thị trường Việt Nam sử dụng LEVAGEN+ kết hợp với Hồng Sâm, Đường cỏ ngọt và các chất điện giải tạo nên công thức độc đáo có công dụng ngăn ngừa nguy cơ chuột rút, hỗ trợ phục hồi cơ bắp và giảm mệt mỏi sau tập luyện.',
+  bannerButtonText: 'XEM THÊM',
   partnerBannerImage: 'https://picsum.photos/seed/360sport-banner/1200/600',
+  partnerBannerTitle: 'ĐỒNG HÀNH CÙNG MỌI GIẢI ĐẤU THỂ THAO',
+  partnerBannerDesc: '360 SPORT tự hào là nhà tài trợ và đồng hành cùng nhiều giải chạy marathon, trail và các sự kiện thể thao lớn trên toàn quốc.',
+  partnerBannerButtonText: 'Đọc Nhịp Sống 360',
   productHighlightImage: 'https://picsum.photos/seed/360sport-player/800/800',
+  featuredProductIds: [],
   contactPhone: '090 123 4567',
   contactEmail: 'contact@360sport.vn',
   contactAddress: '123 Đường Thể Thao, Quận 1, TP. Hồ Chí Minh',

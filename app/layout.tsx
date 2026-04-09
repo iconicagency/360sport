@@ -4,6 +4,7 @@ import { CartProvider } from '@/components/CartProvider';
 import MiniCart from '@/components/MiniCart';
 import { FirebaseProvider } from '@/components/FirebaseProvider';
 import { SettingsProvider } from '@/components/SettingsProvider';
+import FaviconManager from '@/components/FaviconManager';
 
 export const metadata: Metadata = {
   title: '360 Sport Clone',
@@ -16,6 +17,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
       <body suppressHydrationWarning>
         <FirebaseProvider>
           <SettingsProvider>
+            <FaviconManager />
             <CartProvider>
               {children}
               <MiniCart />

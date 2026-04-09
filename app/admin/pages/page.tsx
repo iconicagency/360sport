@@ -12,6 +12,8 @@ interface PageContent {
   title: string;
   content: string;
   updatedAt: string;
+  seoTitle?: string;
+  seoDescription?: string;
 }
 
 export default function PagesManager() {
@@ -49,6 +51,8 @@ export default function PagesManager() {
       await setDoc(pageRef, {
         title: editingPage.title,
         content: editingPage.content,
+        seoTitle: editingPage.seoTitle || '',
+        seoDescription: editingPage.seoDescription || '',
         updatedAt: new Date().toISOString()
       }, { merge: true });
       
@@ -110,18 +114,30 @@ export default function PagesManager() {
     }
   };
 
-  const initializeAboutPage = async () => {
+  const initializeAllPages = async () => {
     setSaving(true);
     try {
-      const aboutId = 'about';
-      await setDoc(doc(db, 'pages', aboutId), {
-        title: 'Giới thiệu 360 Sport',
-        content: '<h3>Câu chuyện thương hiệu</h3><p>Sản phẩm 360 SPORT được nghiên cứu dựa trên thể trạng và nhu cầu của người Việt...</p>',
-        updatedAt: new Date().toISOString()
+      const batch = writeBatch(db);
+      
+      const pagesToInit = [
+        { id: 'about', title: 'Giới thiệu', content: '<h3>Giới thiệu về 360 Sport</h3><p>360 Sport là thương hiệu hàng đầu về thức uống thể thao tại Việt Nam...</p>' },
+        { id: 'contact', title: 'Liên hệ', content: '<h3>Thông tin liên hệ</h3><p>Địa chỉ: 123 Đường Thể Thao, Quận 1, TP. Hồ Chí Minh<br/>Email: contact@360sport.vn<br/>Điện thoại: 090 123 4567</p>' },
+        { id: 'blog', title: 'Nhịp sống 360', content: '<h3>Nhịp sống 360</h3><p>Cập nhật tin tức, sự kiện và cẩm nang thể thao mới nhất từ 360 Sport.</p>' }
+      ];
+
+      pagesToInit.forEach(page => {
+        batch.set(doc(db, 'pages', page.id), {
+          title: page.title,
+          content: page.content,
+          updatedAt: new Date().toISOString()
+        });
       });
-      alert("Đã khởi tạo trang Giới thiệu.");
+
+      await batch.commit();
+      alert("Đã khởi tạo các trang cơ bản.");
     } catch (error) {
-      console.error("Error initializing about page:", error);
+      console.error("Error initializing pages:", error);
+      alert("Lỗi khi khởi tạo trang.");
     } finally {
       setSaving(false);
     }
@@ -173,6 +189,26 @@ export default function PagesManager() {
               placeholder="Nhập nội dung trang..."
             />
           </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">SEO Title</label>
+              <input
+                type="text"
+                value={editingPage.seoTitle || ''}
+                onChange={(e) => setEditingPage({ ...editingPage, seoTitle: e.target.value })}
+                className="w-full px-4 py-2 border rounded-md"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">SEO Description</label>
+              <textarea
+                value={editingPage.seoDescription || ''}
+                onChange={(e) => setEditingPage({ ...editingPage, seoDescription: e.target.value })}
+                className="w-full px-4 py-2 border rounded-md"
+                rows={3}
+              />
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -195,11 +231,11 @@ export default function PagesManager() {
           )}
           {pages.length === 0 && (
             <button
-              onClick={initializeAboutPage}
+              onClick={initializeAllPages}
               disabled={saving}
               className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition flex items-center gap-2"
             >
-              <Layout className="w-4 h-4" /> Khởi tạo trang Giới thiệu
+              <Layout className="w-4 h-4" /> Khởi tạo các trang cơ bản
             </button>
           )}
         </div>
