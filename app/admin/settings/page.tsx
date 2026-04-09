@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Save, Loader2, Palette, Image as ImageIcon, Phone, Mail, MapPin, Globe } from 'lucide-react';
+import ImageUpload from '@/components/admin/ImageUpload';
 
 export default function AdminSettings() {
   const [loading, setLoading] = useState(true);
@@ -167,13 +168,19 @@ export default function AdminSettings() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Hero Image URL</label>
+              <ImageUpload 
+                label="Hero Image"
+                currentImageUrl={formData.heroImage}
+                onUploadComplete={(url) => setFormData(prev => ({ ...prev, heroImage: url }))}
+                folder="settings"
+              />
+              <p className="text-[10px] text-gray-400 mt-1">Hoặc dán URL trực tiếp bên dưới:</p>
               <input
                 type="text"
                 name="heroImage"
                 value={formData.heroImage}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 mt-1 text-xs"
               />
             </div>
           </div>
