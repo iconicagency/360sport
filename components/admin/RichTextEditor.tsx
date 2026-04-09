@@ -17,25 +17,38 @@ interface RichTextEditorProps {
 const modules = {
   toolbar: [
     [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    [{ font: [] }, { size: ['small', false, 'large', 'huge'] }],
     ['bold', 'italic', 'underline', 'strike'],
-    [{ list: 'ordered' }, { list: 'bullet' }],
     [{ color: [] }, { background: [] }],
-    ['link', 'image'],
+    [{ script: 'sub' }, { script: 'super' }],
+    [{ header: 1 }, { header: 2 }, 'blockquote', 'code-block'],
+    [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
+    [{ align: [] }],
+    ['link', 'image', 'video'],
     ['clean'],
   ],
 };
 
 const formats = [
   'header',
+  'font',
+  'size',
   'bold',
   'italic',
   'underline',
   'strike',
-  'list',
   'color',
   'background',
+  'script',
+  'blockquote',
+  'code-block',
+  'list',
+  'bullet',
+  'indent',
+  'align',
   'link',
   'image',
+  'video',
 ];
 
 export default function RichTextEditor({ value, onChange, placeholder }: RichTextEditorProps) {
