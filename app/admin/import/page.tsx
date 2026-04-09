@@ -12,7 +12,7 @@ export default function ImportPage() {
   const [status, setStatus] = useState<{
     type: 'idle' | 'success' | 'error' | 'processing';
     message: string;
-    details?: { posts: number; products: number };
+    details?: { posts: number; products: number; errors: number };
   }>({ type: 'idle', message: '' });
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,6 +27,7 @@ export default function ImportPage() {
       const parser = new XMLParser({
         ignoreAttributes: false,
         attributeNamePrefix: "@_",
+        textNodeName: "#text",
       });
       const jsonObj = parser.parse(text);
 
@@ -42,84 +43,124 @@ export default function ImportPage() {
       itemsArray.forEach((item: any) => {
         if (item['wp:post_type'] === 'attachment') {
           const id = item['wp:post_id'];
-          const url = item['wp:attachment_url'] || item['guid']?.['#text'] || item['guid'];
+          const url = item['wp:attachment_url'] || (typeof item['guid'] === 'object' ? item['guid']?.['#text'] : item['guid']);
           if (id && url) attachments.set(String(id), url);
         }
       });
 
       let postsCount = 0;
       let productsCount = 0;
+      let errorsCount = 0;
 
       setStatus({ type: 'processing', message: `Đang xử lý ${itemsArray.length} mục...` });
 
       // 2. Second pass: Process posts and products
       for (const item of itemsArray) {
-        const postType = item['wp:post_type'];
-        
-        // Helper to get meta value
-        const getMeta = (key: string) => {
-          const meta = item['wp:postmeta'];
-          if (!meta) return null;
-          const metaArray = Array.isArray(meta) ? meta : [meta];
-          const found = metaArray.find((m: any) => m['wp:meta_key'] === key);
-          return found ? found['wp:meta_value'] : null;
-        };
+        try {
+          const postType = item['wp:post_type'];
+          if (postType !== 'post' && postType !== 'product') continue;
 
-        // Helper to get category
-        const getCategory = (domain: string) => {
-          const cats = item['category'];
-          if (!cats) return 'Chưa phân loại';
-          const catsArray = Array.isArray(cats) ? cats : [cats];
-          const found = catsArray.find((c: any) => c['@_domain'] === domain);
-          return found ? (typeof found === 'string' ? found : found['#text'] || found['@_nicename']) : 'Chưa phân loại';
-        };
+          // Helper to get meta value
+          const getMeta = (key: string) => {
+            const meta = item['wp:postmeta'];
+            if (!meta) return null;
+            const metaArray = Array.isArray(meta) ? meta : [meta];
+            const found = metaArray.find((m: any) => m['wp:meta_key'] === key);
+            return found ? found['wp:meta_value'] : null;
+          };
 
-        // Get thumbnail URL
-        const thumbId = getMeta('_thumbnail_id');
-        const imageUrl = thumbId ? attachments.get(String(thumbId)) : 'https://picsum.photos/seed/sport/800/600';
+          // Helper to get category
+          const getCategory = (domain: string) => {
+            const cats = item['category'];
+            if (!cats) return 'Chưa phân loại';
+            const catsArray = Array.isArray(cats) ? cats : [cats];
+            const found = catsArray.find((c: any) => c['@_domain'] === domain);
+            if (!found) return 'Chưa phân loại';
+            return typeof found === 'string' ? found : (found['#text'] || found['@_nicename'] || 'Chưa phân loại');
+          };
 
-        if (postType === 'post') {
-          const postDate = item['wp:post_date'] ? new Date(item['wp:post_date']) : new Date();
-          const validDate = isNaN(postDate.getTime()) ? new Date() : postDate;
-          
-          await addDoc(collection(db, 'blogPosts'), {
-            title: (item['title'] || 'Không tiêu đề').toString().substring(0, 490),
-            content: item['content:encoded'] || '',
-            excerpt: (item['excerpt:encoded'] || (item['content:encoded'] ? item['content:encoded'].substring(0, 150) + '...' : '')).toString().substring(0, 1900),
-            category: getCategory('category').toString().substring(0, 190),
-            image: (imageUrl || 'https://picsum.photos/seed/blog/800/600').toString().substring(0, 990),
-            date: validDate.toLocaleDateString('vi-VN'),
-            createdAt: validDate.toISOString(),
-            authorId: auth.currentUser?.uid || 'imported'
-          });
-          postsCount++;
-        } else if (postType === 'product') {
-          const rawPrice = getMeta('_price') || getMeta('_regular_price') || 0;
-          const price = isNaN(Number(rawPrice)) ? 0 : Number(rawPrice);
-          const rawSalePrice = getMeta('_sale_price');
-          const salePrice = rawSalePrice && !isNaN(Number(rawSalePrice)) ? Number(rawSalePrice) : null;
-          
-          const postDate = item['wp:post_date'] ? new Date(item['wp:post_date']) : new Date();
-          const validDate = isNaN(postDate.getTime()) ? new Date() : postDate;
+          // Get thumbnail URL
+          const thumbId = getMeta('_thumbnail_id');
+          const imageUrl = thumbId ? attachments.get(String(thumbId)) : null;
 
-          await addDoc(collection(db, 'products'), {
-            name: (item['title'] || 'Sản phẩm không tiêu đề').toString().substring(0, 490),
-            description: item['content:encoded'] || '',
-            price: price,
-            originalPrice: salePrice,
-            category: getCategory('product_cat').toString().substring(0, 190),
-            stock: 10, // Default stock
-            image: (imageUrl || 'https://picsum.photos/seed/product/800/600').toString().substring(0, 990),
-            createdAt: validDate.toISOString()
-          });
-          productsCount++;
+          // Get SEO fields
+          const seoTitle = getMeta('rank_math_title') || getMeta('_yoast_wpseo_title') || '';
+          const seoDescription = getMeta('rank_math_description') || getMeta('_yoast_wpseo_metadesc') || '';
+          const seoKeywords = getMeta('rank_math_focus_keyword') || getMeta('_yoast_wpseo_focuskw') || '';
+
+          // Get Category
+          const categoryName = getCategory(postType === 'post' ? 'category' : 'product_cat');
+
+          // Ensure category exists in categories collection
+          if (categoryName && categoryName !== 'Chưa phân loại') {
+            const catQuery = query(
+              collection(db, 'categories'), 
+              where('name', '==', categoryName),
+              where('type', '==', postType)
+            );
+            const catSnap = await getDocs(catQuery);
+            if (catSnap.empty) {
+              await addDoc(collection(db, 'categories'), {
+                name: categoryName,
+                slug: categoryName.toLowerCase().replace(/\s+/g, '-').normalize('NFD').replace(/[\u0300-\u036f]/g, ''),
+                type: postType,
+                createdAt: new Date().toISOString()
+              });
+            }
+          }
+
+          if (postType === 'post') {
+            const postDate = item['wp:post_date'] ? new Date(item['wp:post_date']) : new Date();
+            const validDate = isNaN(postDate.getTime()) ? new Date() : postDate;
+            
+            await addDoc(collection(db, 'blogPosts'), {
+              title: (item['title'] || 'Không tiêu đề').toString().substring(0, 490),
+              content: item['content:encoded'] || '',
+              excerpt: (item['excerpt:encoded'] || (item['content:encoded'] ? item['content:encoded'].substring(0, 150) + '...' : '')).toString().substring(0, 1900),
+              category: categoryName.toString().substring(0, 190),
+              image: (imageUrl || 'https://picsum.photos/seed/blog/800/600').toString().substring(0, 990),
+              date: validDate.toLocaleDateString('vi-VN'),
+              createdAt: validDate.toISOString(),
+              authorId: auth.currentUser?.uid || 'imported',
+              seoTitle: seoTitle.toString().substring(0, 500),
+              seoDescription: seoDescription.toString().substring(0, 1000),
+              seoKeywords: seoKeywords.toString().substring(0, 500)
+            });
+            postsCount++;
+          } else if (postType === 'product') {
+            const rawPrice = getMeta('_price') || getMeta('_regular_price') || 0;
+            const price = isNaN(Number(rawPrice)) ? 0 : Number(rawPrice);
+            const rawSalePrice = getMeta('_sale_price');
+            const salePrice = rawSalePrice && !isNaN(Number(rawSalePrice)) ? Number(rawSalePrice) : null;
+            
+            const postDate = item['wp:post_date'] ? new Date(item['wp:post_date']) : new Date();
+            const validDate = isNaN(postDate.getTime()) ? new Date() : postDate;
+
+            await addDoc(collection(db, 'products'), {
+              name: (item['title'] || 'Sản phẩm không tiêu đề').toString().substring(0, 490),
+              description: item['content:encoded'] || '',
+              price: price,
+              originalPrice: salePrice,
+              category: categoryName.toString().substring(0, 190),
+              stock: 10, // Default stock
+              image: (imageUrl || 'https://picsum.photos/seed/product/800/600').toString().substring(0, 990),
+              createdAt: validDate.toISOString(),
+              seoTitle: seoTitle.toString().substring(0, 500),
+              seoDescription: seoDescription.toString().substring(0, 1000),
+              seoKeywords: seoKeywords.toString().substring(0, 500)
+            });
+            productsCount++;
+          }
+        } catch (e) {
+          console.error("Error importing item:", e, item);
+          errorsCount++;
         }
       }
 
       setStatus({ 
         type: 'success', 
-        message: 'Nhập dữ liệu thành công!', 
-        details: { posts: postsCount, products: productsCount } 
+        message: `Nhập dữ liệu thành công!`, 
+        details: { posts: postsCount, products: productsCount, errors: errorsCount } 
       });
     } catch (error: any) {
       console.error('Import error:', error);
@@ -190,6 +231,7 @@ export default function ImportPage() {
                 <div className="mt-2 text-sm opacity-90">
                   <p>- Đã nhập {status.details.posts} bài viết.</p>
                   <p>- Đã nhập {status.details.products} sản phẩm.</p>
+                  {status.details.errors > 0 && <p className="text-red-600 font-bold">- Có {status.details.errors} mục bị lỗi (xem console).</p>}
                 </div>
               )}
               {status.type === 'success' && (

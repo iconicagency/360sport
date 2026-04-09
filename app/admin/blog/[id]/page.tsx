@@ -1,20 +1,26 @@
 'use client';
 
 import { useState, useEffect, use } from 'react';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, collection, getDocs, query, where, orderBy } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Loader2 } from 'lucide-react';
+import { ArrowLeft, Loader2, Globe, Search, Type } from 'lucide-react';
 import Link from 'next/link';
 import ImageUpload from '@/components/admin/ImageUpload';
 
 import RichTextEditor from '@/components/admin/RichTextEditor';
+
+interface Category {
+  id: string;
+  name: string;
+}
 
 export default function EditBlogPost({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [formData, setFormData] = useState({
     title: '',
     excerpt: '',
@@ -22,11 +28,24 @@ export default function EditBlogPost({ params }: { params: Promise<{ id: string 
     image: '',
     date: '',
     category: '',
+    seoTitle: '',
+    seoDescription: '',
+    seoKeywords: '',
   });
 
   useEffect(() => {
-    async function fetchPost() {
+    async function fetchData() {
       try {
+        // Fetch Categories
+        const q = query(collection(db, 'categories'), where('type', '==', 'post'), orderBy('name', 'asc'));
+        const catSnapshot = await getDocs(q);
+        const cats = catSnapshot.docs.map(doc => ({
+          id: doc.id,
+          name: doc.data().name
+        }));
+        setCategories(cats);
+
+        // Fetch Post
         const docRef = doc(db, 'blogPosts', id);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
@@ -38,17 +57,20 @@ export default function EditBlogPost({ params }: { params: Promise<{ id: string 
             image: data.image || '',
             date: data.date || '',
             category: data.category || '',
+            seoTitle: data.seoTitle || '',
+            seoDescription: data.seoDescription || '',
+            seoKeywords: data.seoKeywords || '',
           });
         } else {
           router.push('/admin/blog');
         }
       } catch (error) {
-        console.error("Error fetching blog post:", error);
+        console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
       }
     }
-    fetchPost();
+    fetchData();
   }, [id, router]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -66,12 +88,7 @@ export default function EditBlogPost({ params }: { params: Promise<{ id: string 
 
     try {
       await updateDoc(doc(db, 'blogPosts', id), {
-        title: formData.title,
-        excerpt: formData.excerpt,
-        content: formData.content,
-        image: formData.image,
-        date: formData.date,
-        category: formData.category,
+        ...formData
       });
       
       router.push('/admin/blog');
@@ -168,10 +185,68 @@ export default function EditBlogPost({ params }: { params: Promise<{ id: string 
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm"
               >
                 <option value="">Chọn chuyên mục</option>
-                <option value="NHỊP SỐNG 360 SPORT">NHỊP SỐNG 360 SPORT</option>
-                <option value="Sản phẩm mới">Sản phẩm mới</option>
-                <option value="Review sản phẩm">Review sản phẩm</option>
+                {categories.map(cat => (
+                  <option key={cat.id} value={cat.name}>{cat.name}</option>
+                ))}
+                {categories.length === 0 && (
+                  <>
+                    <option value="NHỊP SỐNG 360 SPORT">NHỊP SỐNG 360 SPORT</option>
+                    <option value="Sản phẩm mới">Sản phẩm mới</option>
+                    <option value="Review sản phẩm">Review sản phẩm</option>
+                  </>
+                )}
               </select>
+            </div>
+
+            {/* SEO Box */}
+            <div className="bg-white rounded-lg shadow-sm p-6">
+              <h3 className="font-bold text-gray-900 mb-4 pb-2 border-b flex items-center gap-2">
+                <Globe className="w-4 h-4 text-blue-600" /> Tối ưu SEO
+              </h3>
+              <div className="space-y-4">
+                <div>
+                  <label htmlFor="seoTitle" className="block text-xs font-medium text-gray-500 mb-1 flex items-center gap-1">
+                    <Type className="w-3 h-3" /> SEO Title
+                  </label>
+                  <input
+                    type="text"
+                    id="seoTitle"
+                    name="seoTitle"
+                    value={formData.seoTitle}
+                    onChange={handleChange}
+                    placeholder="Tiêu đề hiển thị trên Google"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="seoDescription" className="block text-xs font-medium text-gray-500 mb-1 flex items-center gap-1">
+                    <Search className="w-3 h-3" /> SEO Description
+                  </label>
+                  <textarea
+                    id="seoDescription"
+                    name="seoDescription"
+                    rows={3}
+                    value={formData.seoDescription}
+                    onChange={handleChange}
+                    placeholder="Mô tả ngắn hiển thị trên Google"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm"
+                  ></textarea>
+                </div>
+                <div>
+                  <label htmlFor="seoKeywords" className="block text-xs font-medium text-gray-500 mb-1">
+                    Từ khóa (cách nhau bởi dấu phẩy)
+                  </label>
+                  <input
+                    type="text"
+                    id="seoKeywords"
+                    name="seoKeywords"
+                    value={formData.seoKeywords}
+                    onChange={handleChange}
+                    placeholder="sport, drink, health"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm"
+                  />
+                </div>
+              </div>
             </div>
 
             {/* Date Box */}

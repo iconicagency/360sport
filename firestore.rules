@@ -25,6 +25,9 @@ service cloud.firestore {
     //   - category: string (required)
     //   - createdAt: string (required)
     //   - authorId: string (required)
+    //   - seoTitle: string (optional)
+    //   - seoDescription: string (optional)
+    //   - seoKeywords: string (optional)
     //
     // Collection: products
     // Document ID: {productId}
@@ -36,6 +39,17 @@ service cloud.firestore {
     //   - image: string (required)
     //   - category: string (required)
     //   - stock: number (required)
+    //   - createdAt: string (required)
+    //   - seoTitle: string (optional)
+    //   - seoDescription: string (optional)
+    //   - seoKeywords: string (optional)
+    //
+    // Collection: categories
+    // Document ID: {categoryId}
+    // Fields:
+    //   - name: string (required)
+    //   - slug: string (required)
+    //   - type: string (required, 'post' or 'product')
     //   - createdAt: string (required)
     //
     // Collection: orders
@@ -111,25 +125,39 @@ service cloud.firestore {
     
     function isValidBlogPost(data) {
       return hasRequiredFields(['title', 'excerpt', 'content', 'image', 'date', 'category', 'createdAt', 'authorId']) &&
-             data.title is string && data.title.size() > 0 && data.title.size() < 500 &&
-             data.excerpt is string && data.excerpt.size() > 0 && data.excerpt.size() < 2000 &&
-             data.content is string && data.content.size() > 0 && data.content.size() < 200000 &&
-             data.image is string && data.image.size() > 0 && data.image.size() < 1000 &&
-             data.date is string && data.date.size() > 0 && data.date.size() < 100 &&
-             data.category is string && data.category.size() > 0 && data.category.size() < 200 &&
+             data.title is string && data.title.size() >= 0 && data.title.size() < 500 &&
+             data.excerpt is string && data.excerpt.size() >= 0 && data.excerpt.size() < 2000 &&
+             data.content is string && data.content.size() >= 0 && data.content.size() < 200000 &&
+             data.image is string && data.image.size() >= 0 && data.image.size() < 1000 &&
+             data.date is string && data.date.size() >= 0 && data.date.size() < 100 &&
+             data.category is string && data.category.size() >= 0 && data.category.size() < 200 &&
              isValidDateString(data.createdAt) &&
-             data.authorId is string && data.authorId.size() > 0 && data.authorId.size() < 100;
+             data.authorId is string && data.authorId.size() > 0 && data.authorId.size() < 100 &&
+             (!('seoTitle' in data) || data.seoTitle is string) &&
+             (!('seoDescription' in data) || data.seoDescription is string) &&
+             (!('seoKeywords' in data) || data.seoKeywords is string);
     }
     
     function isValidProduct(data) {
       return hasRequiredFields(['name', 'description', 'price', 'image', 'category', 'stock', 'createdAt']) &&
-             data.name is string && data.name.size() > 0 && data.name.size() < 500 &&
-             data.description is string && data.description.size() > 0 && data.description.size() < 100000 &&
+             data.name is string && data.name.size() >= 0 && data.name.size() < 500 &&
+             data.description is string && data.description.size() >= 0 && data.description.size() < 100000 &&
              data.price is number && data.price >= 0 &&
              (!('originalPrice' in data) || data.originalPrice == null || (data.originalPrice is number && data.originalPrice >= 0)) &&
-             data.image is string && data.image.size() > 0 && data.image.size() < 1000 &&
-             data.category is string && data.category.size() > 0 && data.category.size() < 200 &&
+             data.image is string && data.image.size() >= 0 && data.image.size() < 1000 &&
+             data.category is string && data.category.size() >= 0 && data.category.size() < 200 &&
              data.stock is number && data.stock >= 0 &&
+             isValidDateString(data.createdAt) &&
+             (!('seoTitle' in data) || data.seoTitle is string) &&
+             (!('seoDescription' in data) || data.seoDescription is string) &&
+             (!('seoKeywords' in data) || data.seoKeywords is string);
+    }
+
+    function isValidCategory(data) {
+      return hasRequiredFields(['name', 'slug', 'type', 'createdAt']) &&
+             data.name is string && data.name.size() > 0 && data.name.size() < 100 &&
+             data.slug is string && data.slug.size() > 0 && data.slug.size() < 100 &&
+             data.type in ['post', 'product'] &&
              isValidDateString(data.createdAt);
     }
     
@@ -168,6 +196,13 @@ service cloud.firestore {
       allow read: if true;
       allow create: if isAuthenticated() && isValidProduct(request.resource.data);
       allow update: if isAdmin() && isValidProduct(request.resource.data);
+      allow delete: if isAdmin();
+    }
+
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow create: if isAuthenticated() && isValidCategory(request.resource.data);
+      allow update: if isAdmin() && isValidCategory(request.resource.data);
       allow delete: if isAdmin();
     }
 
