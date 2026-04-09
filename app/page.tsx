@@ -39,34 +39,34 @@ export default function Home() {
 
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="relative bg-gray-900 text-white overflow-hidden">
+        <section className="relative bg-brand-blue text-white overflow-hidden">
           <div className="absolute inset-0 z-0">
             <Image 
               src="https://picsum.photos/seed/360sport-hero/1920/800" 
               alt="Hero Background" 
               fill 
-              className="object-cover opacity-40"
+              className="object-cover opacity-30"
               priority
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/80 to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-brand-blue via-brand-blue/80 to-transparent"></div>
           </div>
           
           <div className="container mx-auto px-4 py-16 md:py-24 relative z-10">
             <div className="max-w-2xl">
-              <div className="inline-block bg-[#f97316] text-white px-3 py-1 rounded-full text-xs font-bold tracking-wider mb-4">
+              <div className="inline-block bg-brand-orange text-white px-3 py-1 rounded-full text-xs font-bold tracking-wider mb-4">
                 SẢN PHẨM MỚI
               </div>
               <h1 className="text-3xl md:text-5xl font-extrabold leading-tight mb-4 tracking-tight">
                 THỨC UỐNG TĂNG LỰC <br/>
-                <span className="text-[#f97316]">BÙ KHOÁNG BÙ ĐIỆN GIẢI</span>
+                <span className="text-white drop-shadow-[0_0_10px_rgba(0,174,239,0.8)]">BÙ KHOÁNG BÙ ĐIỆN GIẢI</span>
               </h1>
-              <p className="text-base md:text-lg text-gray-300 mb-8 leading-relaxed max-w-xl">
+              <p className="text-base md:text-lg text-blue-50 mb-8 leading-relaxed max-w-xl">
                 Sản phẩm 360 SPORT được nghiên cứu dựa trên thể trạng và nhu cầu của người Việt. Bổ sung năng lượng tức thì, hỗ trợ phục hồi cơ bắp sau tập luyện.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link 
                   href="#products" 
-                  className="bg-[#f97316] hover:bg-orange-600 text-white px-6 py-3 rounded-full font-bold text-base transition-all flex items-center gap-2 shadow-lg shadow-orange-500/30"
+                  className="bg-brand-blue hover:bg-brand-dark-blue text-white px-6 py-3 rounded-full font-bold text-base transition-all flex items-center gap-2 shadow-lg shadow-brand-blue/30"
                 >
                   Mua Ngay <ArrowRight className="h-4 w-4" />
                 </Link>
@@ -86,17 +86,17 @@ export default function Home() {
           <div className="container mx-auto px-4">
             <div className="flex flex-col lg:flex-row items-center gap-12">
               <div className="lg:w-1/2 space-y-8 z-10">
-                <h2 className="text-3xl md:text-4xl font-extrabold text-gray-400 uppercase tracking-tight">
+                <h2 className="text-3xl md:text-4xl font-extrabold text-brand-blue uppercase tracking-tight">
                   Về 360 SPORT
                 </h2>
                 
                 <div className="space-y-8">
                   <div className="flex gap-6">
                     <div className="w-20 shrink-0 flex flex-col items-center text-center">
-                      <div className="w-12 h-12 mb-2 flex items-center justify-center text-gray-700">
+                      <div className="w-12 h-12 mb-2 flex items-center justify-center text-brand-blue">
                         <Hexagon className="w-8 h-8" strokeWidth={1.5} />
                       </div>
-                      <span className="text-[10px] font-bold text-gray-600 uppercase tracking-wider">Công thức<br/>độc đáo</span>
+                      <span className="text-[10px] font-bold text-brand-blue uppercase tracking-wider">Công thức<br/>độc đáo</span>
                     </div>
                     <div className="flex-1 pt-2">
                       <p className="text-gray-600 leading-relaxed text-sm md:text-base">
@@ -107,10 +107,10 @@ export default function Home() {
 
                   <div className="flex gap-6">
                     <div className="w-20 shrink-0 flex flex-col items-center text-center">
-                      <div className="w-12 h-12 mb-2 flex items-center justify-center text-gray-700">
+                      <div className="w-12 h-12 mb-2 flex items-center justify-center text-brand-blue">
                         <Activity className="w-8 h-8" strokeWidth={1.5} />
                       </div>
-                      <span className="text-[10px] font-bold text-gray-600 uppercase tracking-wider">Công dụng<br/>tối ưu</span>
+                      <span className="text-[10px] font-bold text-brand-blue uppercase tracking-wider">Công dụng<br/>tối ưu</span>
                     </div>
                     <div className="flex-1 pt-2">
                       <p className="text-gray-600 leading-relaxed text-sm md:text-base">
@@ -121,10 +121,10 @@ export default function Home() {
 
                   <div className="flex gap-6">
                     <div className="w-20 shrink-0 flex flex-col items-center text-center">
-                      <div className="w-12 h-12 mb-2 flex items-center justify-center text-gray-700">
+                      <div className="w-12 h-12 mb-2 flex items-center justify-center text-brand-blue">
                         <Leaf className="w-8 h-8" strokeWidth={1.5} />
                       </div>
-                      <span className="text-[10px] font-bold text-gray-600 uppercase tracking-wider">Không sử<br/>dụng đường<br/>hóa học</span>
+                      <span className="text-[10px] font-bold text-brand-blue uppercase tracking-wider">Không sử<br/>dụng đường<br/>hóa học</span>
                     </div>
                     <div className="flex-1 pt-2">
                       <p className="text-gray-600 leading-relaxed text-sm md:text-base">
@@ -135,8 +135,8 @@ export default function Home() {
                 </div>
 
                 <div className="pt-4">
-                  <Link href="/about" className="inline-flex items-center gap-3 text-gray-400 hover:text-[#f97316] transition-colors group">
-                    <div className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center group-hover:border-[#f97316] transition-colors">
+                  <Link href="/about" className="inline-flex items-center gap-3 text-gray-400 hover:text-brand-blue transition-colors group">
+                    <div className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center group-hover:border-brand-blue transition-colors">
                       <ArrowRight className="w-5 h-5" strokeWidth={1.5} />
                     </div>
                     <span className="font-bold tracking-widest uppercase text-xs">Xem Thêm</span>
@@ -162,8 +162,8 @@ export default function Home() {
         <section id="products" className="py-16 bg-gray-50">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900 mb-3 uppercase tracking-tight">Sản Phẩm Nổi Bật</h2>
-              <div className="w-16 h-1 bg-[#f97316] mx-auto rounded-full"></div>
+              <h2 className="text-2xl md:text-3xl font-extrabold text-brand-blue mb-3 uppercase tracking-tight">Sản Phẩm Nổi Bật</h2>
+              <div className="w-16 h-1 bg-brand-blue mx-auto rounded-full"></div>
               <p className="mt-4 text-sm md:text-base text-gray-600 max-w-2xl mx-auto">
                 Khám phá các dòng sản phẩm thức uống bổ sung năng lượng và phụ kiện thể thao chất lượng cao từ 360 SPORT.
               </p>
@@ -187,7 +187,7 @@ export default function Home() {
         </section>
 
         {/* Blue Info Banner Section */}
-        <section className="relative bg-[#1e4b8f] text-white overflow-hidden py-20 md:py-32">
+        <section className="relative bg-brand-blue text-white overflow-hidden py-20 md:py-32">
           <div className="absolute inset-0 z-0">
             <Image 
               src="https://picsum.photos/seed/runner-blue/1920/800" 
@@ -195,7 +195,7 @@ export default function Home() {
               fill 
               className="object-cover opacity-30 mix-blend-overlay"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#1e4b8f] via-[#1e4b8f]/90 to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-brand-blue via-brand-blue/90 to-transparent"></div>
           </div>
           
           <div className="container mx-auto px-4 relative z-10">
@@ -224,16 +224,16 @@ export default function Home() {
         <section className="py-20 bg-[#f4f7f8]">
           <div className="container mx-auto px-4">
             <div className="text-center mb-10">
-              <h2 className="text-3xl md:text-4xl font-extrabold text-gray-400 mb-8 uppercase tracking-tight">CẨM NANG 360</h2>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-brand-blue mb-8 uppercase tracking-tight">CẨM NANG 360</h2>
               
               <div className="flex flex-wrap justify-center gap-4 mb-12">
-                <button className="bg-gray-400 text-white px-6 py-2.5 rounded-full font-bold text-sm uppercase tracking-wider">
+                <button className="bg-brand-blue text-white px-6 py-2.5 rounded-full font-bold text-sm uppercase tracking-wider shadow-lg shadow-brand-blue/20">
                   NHỊP SỐNG 360 SPORT
                 </button>
-                <button className="border border-gray-300 text-gray-600 hover:border-gray-400 px-6 py-2.5 rounded-full text-sm transition-colors">
+                <button className="border border-brand-blue/30 text-brand-blue hover:border-brand-blue px-6 py-2.5 rounded-full text-sm transition-colors font-medium">
                   Sản phẩm mới
                 </button>
-                <button className="border border-gray-300 text-gray-600 hover:border-gray-400 px-6 py-2.5 rounded-full text-sm transition-colors">
+                <button className="border border-brand-blue/30 text-brand-blue hover:border-brand-blue px-6 py-2.5 rounded-full text-sm transition-colors font-medium">
                   Review sản phẩm
                 </button>
               </div>
@@ -252,7 +252,7 @@ export default function Home() {
                 </div>
                 <div className="p-6 flex flex-col flex-grow">
                   <div className="text-xs text-gray-400 mb-3">11.09.2025</div>
-                  <h3 className="font-bold text-lg text-gray-500 group-hover:text-[#f97316] transition-colors leading-snug">
+                  <h3 className="font-bold text-lg text-gray-500 group-hover:text-brand-blue transition-colors leading-snug">
                     360Sport đồng hành cùng những nhà vô địch Ultra Trail Yên Tử 2025: Tôn vinh sức mạnh bền bỉ
                   </h3>
                 </div>
@@ -270,7 +270,7 @@ export default function Home() {
                 </div>
                 <div className="p-6 flex flex-col flex-grow">
                   <div className="text-xs text-gray-400 mb-3">11.09.2025</div>
-                  <h3 className="font-bold text-lg text-gray-500 group-hover:text-[#f97316] transition-colors leading-snug">
+                  <h3 className="font-bold text-lg text-gray-500 group-hover:text-brand-blue transition-colors leading-snug">
                     Tinh thần bền bỉ tại Ultra Trail Yên Tử 2025 – Khi 360Sport tiếp sức cho từng bước chạy
                   </h3>
                 </div>
@@ -288,7 +288,7 @@ export default function Home() {
                 </div>
                 <div className="p-6 flex flex-col flex-grow">
                   <div className="text-xs text-gray-400 mb-3">11.09.2025</div>
-                  <h3 className="font-bold text-lg text-gray-500 group-hover:text-[#f97316] transition-colors leading-snug">
+                  <h3 className="font-bold text-lg text-gray-500 group-hover:text-brand-blue transition-colors leading-snug">
                     360Sport đồng hành cùng Ultra Trail Yên Tử 2025: Tiếp sức hơn 1.000 vận động viên khám phá di sản
                   </h3>
                 </div>
@@ -296,8 +296,8 @@ export default function Home() {
             </div>
             
             <div className="mt-12 text-center">
-              <Link href="/blog" className="inline-flex items-center gap-3 text-gray-400 hover:text-[#f97316] transition-colors group">
-                <div className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center group-hover:border-[#f97316] transition-colors">
+              <Link href="/blog" className="inline-flex items-center gap-3 text-gray-400 hover:text-brand-blue transition-colors group">
+                <div className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center group-hover:border-brand-blue transition-colors">
                   <ArrowRight className="w-5 h-5" strokeWidth={1.5} />
                 </div>
                 <span className="font-bold tracking-widest uppercase text-xs">XEM THÊM</span>
@@ -321,14 +321,14 @@ export default function Home() {
               <div className="relative z-10 p-8 md:p-16 flex flex-col items-center text-center max-w-2xl mx-auto">
                 <h2 className="text-2xl md:text-4xl font-extrabold text-white mb-4 leading-tight">
                   ĐỒNG HÀNH CÙNG MỌI <br/>
-                  <span className="text-[#f97316]">GIẢI ĐẤU THỂ THAO</span>
+                  <span className="text-white drop-shadow-[0_0_10px_rgba(0,174,239,0.8)]">GIẢI ĐẤU THỂ THAO</span>
                 </h2>
                 <p className="text-gray-300 mb-8 text-sm md:text-base">
                   360 SPORT tự hào là nhà tài trợ và đồng hành cùng nhiều giải chạy marathon, trail và các sự kiện thể thao lớn trên toàn quốc.
                 </p>
                 <Link 
                   href="/blog" 
-                  className="bg-[#f97316] hover:bg-orange-600 text-white px-6 py-3 rounded-full font-bold text-base transition-all shadow-lg"
+                  className="bg-brand-blue hover:bg-brand-dark-blue text-white px-6 py-3 rounded-full font-bold text-base transition-all shadow-lg"
                 >
                   Đọc Nhịp Sống 360
                 </Link>
@@ -368,40 +368,40 @@ export default function Home() {
                 <div className="grid grid-cols-2 gap-x-8 gap-y-16">
                   {/* Feature 1 */}
                   <div className="flex flex-col items-center text-center">
-                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center text-blue-500 mb-6 shadow-[0_0_30px_rgba(59,130,246,0.2)]">
+                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center text-brand-blue mb-6 shadow-[0_0_30px_rgba(0,65,130,0.15)]">
                       <MapPin className="w-10 h-10" strokeWidth={1.5} />
                     </div>
-                    <h3 className="font-bold text-gray-700 uppercase tracking-wide text-sm md:text-base">
+                    <h3 className="font-bold text-brand-blue uppercase tracking-wide text-sm md:text-base">
                       SẢN XUẤT HOÀN TOÀN<br/>TẠI VIỆT NAM
                     </h3>
                   </div>
 
                   {/* Feature 2 */}
                   <div className="flex flex-col items-center text-center">
-                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center text-blue-500 mb-6 shadow-[0_0_30px_rgba(59,130,246,0.2)]">
+                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center text-brand-blue mb-6 shadow-[0_0_30px_rgba(0,65,130,0.15)]">
                       <Shield className="w-10 h-10" strokeWidth={1.5} />
                     </div>
-                    <h3 className="font-bold text-gray-700 uppercase tracking-wide text-sm md:text-base">
+                    <h3 className="font-bold text-brand-blue uppercase tracking-wide text-sm md:text-base">
                       KHÔNG ĐƯỜNG<br/>HOÁ HỌC
                     </h3>
                   </div>
 
                   {/* Feature 3 */}
                   <div className="flex flex-col items-center text-center">
-                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center text-blue-500 mb-6 shadow-[0_0_30px_rgba(59,130,246,0.2)]">
+                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center text-brand-blue mb-6 shadow-[0_0_30px_rgba(0,65,130,0.15)]">
                       <Activity className="w-10 h-10" strokeWidth={1.5} />
                     </div>
-                    <h3 className="font-bold text-gray-700 uppercase tracking-wide text-sm md:text-base">
+                    <h3 className="font-bold text-brand-blue uppercase tracking-wide text-sm md:text-base">
                       KHÔNG CÓ<br/>PHẨM MÀU
                     </h3>
                   </div>
 
                   {/* Feature 4 */}
                   <div className="flex flex-col items-center text-center">
-                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center text-blue-500 mb-6 shadow-[0_0_30px_rgba(59,130,246,0.2)]">
+                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center text-brand-blue mb-6 shadow-[0_0_30px_rgba(0,65,130,0.15)]">
                       <Award className="w-10 h-10" strokeWidth={1.5} />
                     </div>
-                    <h3 className="font-bold text-gray-700 uppercase tracking-wide text-sm md:text-base">
+                    <h3 className="font-bold text-brand-blue uppercase tracking-wide text-sm md:text-base">
                       HÀNG VIỆT NAM<br/>CHẤT LƯỢNG CAO
                     </h3>
                   </div>

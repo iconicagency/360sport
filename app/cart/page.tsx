@@ -28,7 +28,7 @@ export default function CartPage() {
             </div>
             <h2 className="text-2xl font-bold mb-4">Giỏ hàng trống</h2>
             <p className="text-gray-500 mb-8">Bạn chưa có sản phẩm nào trong giỏ hàng.</p>
-            <Link href="/products" className="bg-[#f97316] text-white px-8 py-3 rounded-full font-bold inline-block hover:bg-orange-600 transition-colors">
+            <Link href="/products" className="bg-brand-blue text-white px-8 py-3 rounded-full font-bold inline-block hover:bg-brand-dark-blue transition-colors">
               Tiếp tục mua sắm
             </Link>
           </div>
@@ -41,14 +41,14 @@ export default function CartPage() {
                     <Image src={item.image} alt={item.name} fill className="object-cover" />
                   </div>
                   <div className="flex-grow text-center sm:text-left">
-                    <Link href={`/product/${item.id}`} className="font-bold hover:text-[#f97316] transition-colors line-clamp-2">{item.name}</Link>
-                    <div className="text-[#f97316] font-bold mt-1">{formatPrice(item.price)}</div>
+                    <Link href={`/product/${item.id}`} className="font-bold hover:text-brand-blue transition-colors line-clamp-2">{item.name}</Link>
+                    <div className="text-brand-blue font-bold mt-1">{formatPrice(item.price)}</div>
                   </div>
                   <div className="flex items-center gap-4">
                     <div className="flex items-center border border-gray-200 rounded-lg h-10">
-                      <button onClick={() => updateQuantity(item.id, item.quantity - 1)} className="px-3 text-gray-500 hover:text-[#f97316]">-</button>
+                      <button onClick={() => updateQuantity(item.id, item.quantity - 1)} className="px-3 text-gray-500 hover:text-brand-blue">-</button>
                       <span className="w-8 text-center font-medium">{item.quantity}</span>
-                      <button onClick={() => updateQuantity(item.id, item.quantity + 1)} className="px-3 text-gray-500 hover:text-[#f97316]">+</button>
+                      <button onClick={() => updateQuantity(item.id, item.quantity + 1)} className="px-3 text-gray-500 hover:text-brand-blue">+</button>
                     </div>
                     <button onClick={() => removeFromCart(item.id)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors">
                       <Trash2 className="w-5 h-5" />
@@ -70,9 +70,9 @@ export default function CartPage() {
               </div>
               <div className="flex justify-between mb-8 pb-6 border-b text-lg font-bold">
                 <span>Tổng cộng</span>
-                <span className="text-[#f97316]">{formatPrice(totalPrice >= 500000 ? totalPrice : totalPrice + 30000)}</span>
+                <span className="text-brand-blue">{formatPrice(totalPrice >= 500000 ? totalPrice : totalPrice + 30000)}</span>
               </div>
-              <Link href="/checkout" className="w-full bg-[#f97316] text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-orange-600 transition-colors uppercase tracking-wider">
+              <Link href="/checkout" className="w-full bg-brand-blue text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-brand-dark-blue transition-colors uppercase tracking-wider">
                 Thanh Toán <ArrowRight className="w-5 h-5" />
               </Link>
             </div>

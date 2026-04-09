@@ -65,7 +65,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           <button 
             onClick={handleAddToCart} 
             disabled={isAdded}
-            className={`w-full text-white py-2.5 rounded-lg font-medium flex items-center justify-center gap-2 shadow-lg transition-colors pointer-events-auto ${isAdded ? 'bg-green-500 hover:bg-green-600' : 'bg-[#f97316] hover:bg-orange-600'}`}
+            className={`w-full text-white py-2.5 rounded-lg font-medium flex items-center justify-center gap-2 shadow-lg transition-colors pointer-events-auto ${isAdded ? 'bg-green-500 hover:bg-green-600' : 'bg-brand-blue hover:bg-brand-dark-blue'}`}
           >
             {isAdded ? (
               <>
@@ -87,13 +87,13 @@ export default function ProductCard({ product }: ProductCardProps) {
           {product.category}
         </div>
         <Link href={`/products/${product.id}`} className="block mb-3 flex-grow pointer-events-auto">
-          <h3 className="font-semibold text-sm text-gray-900 line-clamp-2 hover:text-[#f97316] transition-colors leading-snug">
+          <h3 className="font-semibold text-sm text-gray-900 line-clamp-2 hover:text-brand-blue transition-colors leading-snug">
             {product.name}
           </h3>
         </Link>
         
         <div className="flex items-center gap-2 mt-auto">
-          <span className="font-bold text-base text-[#f97316]">
+          <span className="font-bold text-base text-brand-blue">
             {formatPrice(product.price)}
           </span>
           {product.originalPrice && (

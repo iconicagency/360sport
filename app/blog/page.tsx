@@ -35,8 +35,8 @@ export default function BlogPage() {
       <Header />
       <main className="flex-grow container mx-auto px-4 py-12">
         <div className="mb-12 text-center">
-          <h1 className="text-3xl md:text-4xl font-extrabold uppercase tracking-tight text-gray-900">Nhịp sống 360 SPORT</h1>
-          <div className="w-24 h-1 bg-[#f97316] mt-4 mx-auto rounded-full"></div>
+          <h1 className="text-3xl md:text-4xl font-extrabold uppercase tracking-tight text-brand-blue">Nhịp sống 360 SPORT</h1>
+          <div className="w-24 h-1 bg-brand-blue mt-4 mx-auto rounded-full"></div>
           <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
             Cập nhật những tin tức sự kiện mới nhất, kiến thức thể thao và hành trình đồng hành cùng cộng đồng của 360 SPORT.
           </p>
@@ -46,7 +46,7 @@ export default function BlogPage() {
           {allPosts.map((post) => (
             <div key={post.id} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col">
               <Link href="#" className="relative h-56 overflow-hidden group">
-                <div className="absolute top-4 left-4 z-10 bg-[#f97316] text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                <div className="absolute top-4 left-4 z-10 bg-brand-blue text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
                   {post.category}
                 </div>
                 <Image 
@@ -59,11 +59,11 @@ export default function BlogPage() {
               </Link>
               <div className="p-6 flex flex-col flex-grow">
                 <div className="text-sm text-gray-500 mb-3 font-medium">{post.date}</div>
-                <h2 className="text-xl font-bold mb-3 line-clamp-2 hover:text-[#f97316] transition-colors leading-snug">
+                <h2 className="text-xl font-bold mb-3 line-clamp-2 hover:text-brand-blue transition-colors leading-snug">
                   <Link href="#">{post.title}</Link>
                 </h2>
                 <p className="text-gray-600 line-clamp-3 mb-4 flex-grow">{post.excerpt}</p>
-                <Link href="#" className="text-[#f97316] font-bold text-sm uppercase tracking-wider hover:underline flex items-center gap-1 mt-auto">
+                <Link href="#" className="text-brand-blue font-bold text-sm uppercase tracking-wider hover:underline flex items-center gap-1 mt-auto">
                   Đọc tiếp &rarr;
                 </Link>
               </div>

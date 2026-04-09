@@ -9,7 +9,7 @@ export default function AboutPage() {
       <Header />
       <main className="flex-grow">
         {/* Hero About */}
-        <div className="relative bg-[#1e4b8f] text-white py-24 md:py-32 overflow-hidden">
+        <div className="relative bg-brand-blue text-white py-24 md:py-32 overflow-hidden">
           <div className="absolute inset-0 z-0">
             <Image 
               src="https://picsum.photos/seed/360about-hero/1920/800" 
@@ -17,11 +17,11 @@ export default function AboutPage() {
               fill 
               className="object-cover opacity-20 mix-blend-overlay"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#1e4b8f] to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-brand-blue to-transparent"></div>
           </div>
           <div className="container mx-auto px-4 relative z-10 text-center">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 uppercase tracking-tight">Giới thiệu</h1>
-            <div className="w-24 h-1.5 bg-[#f97316] mx-auto rounded-full mb-6"></div>
+            <div className="w-24 h-1.5 bg-brand-blue mx-auto rounded-full mb-6"></div>
             <p className="text-lg md:text-xl text-blue-100 max-w-2xl mx-auto font-medium">
               Về 360 Sport
             </p>
@@ -69,7 +69,7 @@ export default function AboutPage() {
         <section className="py-16 md:py-24 bg-gray-50">
           <div className="container mx-auto px-4 max-w-4xl">
             <div className="text-center mb-12">
-              <h2 className="text-sm font-bold text-[#f97316] tracking-widest uppercase mb-2">Câu chuyện thương hiệu</h2>
+              <h2 className="text-sm font-bold text-brand-blue tracking-widest uppercase mb-2">Câu chuyện thương hiệu</h2>
               <h3 className="text-3xl md:text-4xl font-extrabold text-gray-900 uppercase">360 SPORT THỨC UỐNG BỔ SUNG NĂNG LƯỢNG MỚI</h3>
             </div>
             
@@ -84,7 +84,7 @@ export default function AboutPage() {
               <p className="mb-6 leading-relaxed">
                 Vì lẽ đó sản phẩm 360 SPORT ra đời nhằm đem tới giải pháp bổ sung nước hiệu quả cho cộng đồng Việt. Cải thiện sức khoẻ nhờ việc bổ sung nước có chứa các hoạt chất, khoáng chất cần thiết và ưu việt giúp cơ thể có thêm nhiều năng lượng phục vụ cho mọi hoạt động đời thường cũng như trong luyện tập thể thao.
               </p>
-              <p className="mb-6 leading-relaxed font-medium text-[#1e4b8f] text-xl border-l-4 border-[#f97316] pl-6 py-2 bg-white rounded-r-lg shadow-sm">
+              <p className="mb-6 leading-relaxed font-medium text-brand-blue text-xl border-l-4 border-brand-blue pl-6 py-2 bg-white rounded-r-lg shadow-sm">
                 360 SPORT ra đời với phương châm đồng hành cùng cộng đồng Việt để hướng tới một tương lai tốt đẹp hơn.
               </p>
             </div>
@@ -98,14 +98,14 @@ export default function AboutPage() {
               
               {/* Brand Value */}
               <div>
-                <h2 className="text-sm font-bold text-[#f97316] tracking-widest uppercase mb-2">Giá trị thương hiệu</h2>
+                <h2 className="text-sm font-bold text-brand-blue tracking-widest uppercase mb-2">Giá trị thương hiệu</h2>
                 <h3 className="text-2xl md:text-3xl font-extrabold text-gray-900 uppercase mb-6">Hàng Việt Nam chất lượng cao</h3>
                 <div className="bg-gray-50 p-8 rounded-2xl border border-gray-100">
                   <p className="text-gray-700 leading-relaxed">
                     Sản phẩm 360 SPORT được sản xuất tại Công ty cổ phần Dược phẩm Fresh Life, có quy trình và quy chuẩn rõ ràng theo yêu cầu tiêu chuẩn của Bộ Y tế, hệ thống máy móc hiện đại cùng các Dược sĩ đầu ngành trực tiếp chỉ đạo sản xuất và đội ngũ nhân sự dày dặn kinh nghiệm được trang bị những bộ đồ bảo hộ tiệt trùng sát khuẩn quy chuẩn theo đúng quy định đảm bảo an toàn và vệ sinh.
                   </p>
                   <div className="mt-8 flex items-center gap-4">
-                    <ShieldCheck className="w-12 h-12 text-[#1e4b8f]" />
+                    <ShieldCheck className="w-12 h-12 text-brand-blue" />
                     <span className="font-bold text-gray-900 uppercase">Thương hiệu sản xuất hoàn toàn tại Việt Nam</span>
                   </div>
                 </div>
@@ -113,24 +113,24 @@ export default function AboutPage() {
 
               {/* Features */}
               <div>
-                <h2 className="text-sm font-bold text-[#f97316] tracking-widest uppercase mb-2">Đặc điểm nổi bật</h2>
+                <h2 className="text-sm font-bold text-brand-blue tracking-widest uppercase mb-2">Đặc điểm nổi bật</h2>
                 <h3 className="text-2xl md:text-3xl font-extrabold text-gray-900 uppercase mb-6">Tại sao chọn 360 SPORT?</h3>
                 
                 <ul className="space-y-4 mb-12">
                   <li className="flex items-center gap-4 bg-blue-50/50 p-4 rounded-xl border border-blue-100">
-                    <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-[#f97316] shadow-sm">
+                    <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-brand-blue shadow-sm">
                       <CheckCircle2 className="w-6 h-6" />
                     </div>
                     <span className="font-bold text-gray-800 uppercase">Không phẩm màu</span>
                   </li>
                   <li className="flex items-center gap-4 bg-blue-50/50 p-4 rounded-xl border border-blue-100">
-                    <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-[#f97316] shadow-sm">
+                    <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-brand-blue shadow-sm">
                       <CheckCircle2 className="w-6 h-6" />
                     </div>
                     <span className="font-bold text-gray-800 uppercase">Không đường hoá học</span>
                   </li>
                   <li className="flex items-center gap-4 bg-blue-50/50 p-4 rounded-xl border border-blue-100">
-                    <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-[#f97316] shadow-sm">
+                    <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-brand-blue shadow-sm">
                       <Zap className="w-6 h-6" />
                     </div>
                     <span className="font-bold text-gray-800 uppercase">Bổ sung năng lượng tức thì</span>
@@ -143,17 +143,17 @@ export default function AboutPage() {
         </section>
 
         {/* Target Audience */}
-        <section className="py-16 md:py-24 bg-[#1e4b8f] text-white">
+        <section className="py-16 md:py-24 bg-brand-blue text-white">
           <div className="container mx-auto px-4 max-w-6xl">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-extrabold uppercase mb-4">Đối tượng sử dụng</h2>
-              <div className="w-24 h-1 bg-[#f97316] mx-auto rounded-full mb-6"></div>
+              <div className="w-24 h-1 bg-white mx-auto rounded-full mb-6"></div>
               <p className="text-blue-100 text-lg">360 SPORT phù hợp cho nhiều đối tượng:</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20 hover:bg-white/20 transition-colors">
-                <Target className="w-10 h-10 text-[#f97316] mb-6" />
+                <Target className="w-10 h-10 text-white mb-6" />
                 <h3 className="text-xl font-bold mb-3">Người luyện tập thể thao</h3>
                 <p className="text-blue-100 text-sm leading-relaxed">
                   Giúp tăng cường hiệu suất hỗ trợ phục hồi sau luyện tập.
@@ -161,7 +161,7 @@ export default function AboutPage() {
               </div>
 
               <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20 hover:bg-white/20 transition-colors">
-                <Activity className="w-10 h-10 text-[#f97316] mb-6" />
+                <Activity className="w-10 h-10 text-white mb-6" />
                 <h3 className="text-xl font-bold mb-3">Người vận động thể chất nhiều</h3>
                 <p className="text-blue-100 text-sm leading-relaxed">
                   Cung cấp năng lượng và duy trì tỉnh táo.
@@ -169,7 +169,7 @@ export default function AboutPage() {
               </div>
 
               <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20 hover:bg-white/20 transition-colors">
-                <Droplets className="w-10 h-10 text-[#f97316] mb-6" />
+                <Droplets className="w-10 h-10 text-white mb-6" />
                 <h3 className="text-xl font-bold mb-3">Người di chuyển thường xuyên</h3>
                 <p className="text-blue-100 text-sm leading-relaxed">
                   Bổ sung khoáng chất và điện giải chống mệt mỏi.
@@ -177,7 +177,7 @@ export default function AboutPage() {
               </div>
 
               <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20 hover:bg-white/20 transition-colors">
-                <Zap className="w-10 h-10 text-[#f97316] mb-6" />
+                <Zap className="w-10 h-10 text-white mb-6" />
                 <h3 className="text-xl font-bold mb-3">Nhân viên văn phòng, học sinh, sinh viên</h3>
                 <p className="text-blue-100 text-sm leading-relaxed">
                   Giúp tập trung học và làm việc hiệu quả.
