@@ -51,15 +51,23 @@ export function FirebaseProvider({ children }: { children: React.ReactNode }) {
         
         if (!userSnap.exists()) {
           // Default to customer role. Admin role must be set manually or via bootstrap
+          const role = currentUser.email === 'thanhnt.ads@gmail.com' ? 'admin' : 'customer';
           await setDoc(userRef, {
             uid: currentUser.uid,
             email: currentUser.email,
-            role: currentUser.email === 'thanhnt.ads@gmail.com' ? 'admin' : 'customer',
+            role: role,
             createdAt: new Date().toISOString()
           });
-          setIsAdmin(currentUser.email === 'thanhnt.ads@gmail.com');
+          setIsAdmin(role === 'admin');
         } else {
-          setIsAdmin(userSnap.data().role === 'admin' || currentUser.email === 'thanhnt.ads@gmail.com');
+          const userData = userSnap.data();
+          if (currentUser.email === 'thanhnt.ads@gmail.com' && userData.role !== 'admin') {
+            // Force admin role for the specific admin email
+            await setDoc(userRef, { ...userData, role: 'admin' }, { merge: true });
+            setIsAdmin(true);
+          } else {
+            setIsAdmin(userData.role === 'admin' || currentUser.email === 'thanhnt.ads@gmail.com');
+          }
         }
       } else {
         setIsAdmin(false);

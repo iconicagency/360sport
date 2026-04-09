@@ -5,6 +5,7 @@ import { collection, getCountFromServer } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Package, FileText, ShoppingCart, Users } from 'lucide-react';
 import Link from 'next/link';
+import BootstrapButton from '@/components/admin/BootstrapButton';
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({
@@ -81,6 +82,8 @@ export default function AdminDashboard() {
           This is your administrative dashboard. From here, you can manage your products, blog posts, and view customer orders.
           Use the sidebar navigation to access different sections of the admin panel.
         </p>
+        
+        <BootstrapButton />
       </div>
     </div>
   );
