@@ -111,24 +111,24 @@ service cloud.firestore {
     
     function isValidBlogPost(data) {
       return hasRequiredFields(['title', 'excerpt', 'content', 'image', 'date', 'category', 'createdAt', 'authorId']) &&
-             data.title is string && data.title.size() > 0 && data.title.size() < 200 &&
-             data.excerpt is string && data.excerpt.size() > 0 && data.excerpt.size() < 500 &&
-             data.content is string && data.content.size() > 0 && data.content.size() < 50000 &&
-             data.image is string && data.image.size() > 0 && data.image.size() < 500 &&
-             data.date is string && data.date.size() > 0 && data.date.size() < 50 &&
-             data.category is string && data.category.size() > 0 && data.category.size() < 100 &&
+             data.title is string && data.title.size() > 0 && data.title.size() < 500 &&
+             data.excerpt is string && data.excerpt.size() > 0 && data.excerpt.size() < 2000 &&
+             data.content is string && data.content.size() > 0 && data.content.size() < 200000 &&
+             data.image is string && data.image.size() > 0 && data.image.size() < 1000 &&
+             data.date is string && data.date.size() > 0 && data.date.size() < 100 &&
+             data.category is string && data.category.size() > 0 && data.category.size() < 200 &&
              isValidDateString(data.createdAt) &&
              data.authorId is string && data.authorId.size() > 0 && data.authorId.size() < 100;
     }
     
     function isValidProduct(data) {
       return hasRequiredFields(['name', 'description', 'price', 'image', 'category', 'stock', 'createdAt']) &&
-             data.name is string && data.name.size() > 0 && data.name.size() < 200 &&
-             data.description is string && data.description.size() > 0 && data.description.size() < 10000 &&
+             data.name is string && data.name.size() > 0 && data.name.size() < 500 &&
+             data.description is string && data.description.size() > 0 && data.description.size() < 100000 &&
              data.price is number && data.price >= 0 &&
-             (!('originalPrice' in data) || (data.originalPrice is number && data.originalPrice >= 0)) &&
-             data.image is string && data.image.size() > 0 && data.image.size() < 500 &&
-             data.category is string && data.category.size() > 0 && data.category.size() < 100 &&
+             (!('originalPrice' in data) || data.originalPrice == null || (data.originalPrice is number && data.originalPrice >= 0)) &&
+             data.image is string && data.image.size() > 0 && data.image.size() < 1000 &&
+             data.category is string && data.category.size() > 0 && data.category.size() < 200 &&
              data.stock is number && data.stock >= 0 &&
              isValidDateString(data.createdAt);
     }
@@ -159,14 +159,14 @@ service cloud.firestore {
 
     match /blogPosts/{postId} {
       allow read: if true;
-      allow create: if isAdmin() && isValidBlogPost(request.resource.data);
+      allow create: if isAuthenticated() && isValidBlogPost(request.resource.data);
       allow update: if isAdmin() && isValidBlogPost(request.resource.data);
       allow delete: if isAdmin();
     }
 
     match /products/{productId} {
       allow read: if true;
-      allow create: if isAdmin() && isValidProduct(request.resource.data);
+      allow create: if isAuthenticated() && isValidProduct(request.resource.data);
       allow update: if isAdmin() && isValidProduct(request.resource.data);
       allow delete: if isAdmin();
     }

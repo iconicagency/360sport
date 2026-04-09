@@ -3,7 +3,7 @@
 import { useAuth } from '@/components/FirebaseProvider';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Package, FileText, ShoppingCart, LogOut, Mail, Lock, Users, Upload } from 'lucide-react';
+import { LayoutDashboard, Package, FileText, ShoppingCart, LogOut, Mail, Lock, Users, Upload, Home } from 'lucide-react';
 import { useState } from 'react';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -205,8 +205,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     <div className="min-h-screen bg-gray-100 flex">
       {/* Sidebar */}
       <aside className="w-64 bg-white shadow-md flex flex-col">
-        <div className="p-6 border-b">
+        <div className="p-6 border-b flex items-center justify-between">
           <h2 className="text-2xl font-bold text-blue-600">360 Admin</h2>
+          <Link href="/" className="text-gray-400 hover:text-blue-600 transition-colors" title="Về trang chủ">
+            <Home className="w-5 h-5" />
+          </Link>
         </div>
         <nav className="flex-1 p-4 space-y-2">
           {navItems.map((item) => {

@@ -16,6 +16,10 @@ export default function AdminSettings() {
     heroTitle: 'THỨC UỐNG TĂNG LỰC BÙ KHOÁNG BÙ ĐIỆN GIẢI',
     heroSubtitle: 'Sản phẩm 360 SPORT được nghiên cứu dựa trên thể trạng và nhu cầu của người Việt. Bổ sung năng lượng tức thì, hỗ trợ phục hồi cơ bắp sau tập luyện.',
     heroImage: 'https://picsum.photos/seed/360sport-hero/1920/800',
+    aboutImage: 'https://picsum.photos/seed/soccer-kick/1000/1000',
+    bannerImage: 'https://picsum.photos/seed/runner-blue/1920/800',
+    partnerBannerImage: 'https://picsum.photos/seed/360sport-banner/1200/600',
+    productHighlightImage: 'https://picsum.photos/seed/360sport-player/800/800',
     contactPhone: '090 123 4567',
     contactEmail: 'contact@360sport.vn',
     contactAddress: '123 Đường Thể Thao, Quận 1, TP. Hồ Chí Minh',
@@ -174,13 +178,47 @@ export default function AdminSettings() {
                 onUploadComplete={(url) => setFormData(prev => ({ ...prev, heroImage: url }))}
                 folder="settings"
               />
-              <p className="text-[10px] text-gray-400 mt-1">Hoặc dán URL trực tiếp bên dưới:</p>
-              <input
-                type="text"
-                name="heroImage"
-                value={formData.heroImage}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 mt-1 text-xs"
+            </div>
+          </div>
+        </section>
+
+        {/* Homepage Images */}
+        <section className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+          <div className="flex items-center gap-2 mb-6 border-b pb-4">
+            <ImageIcon className="h-5 w-5 text-blue-600" />
+            <h2 className="text-xl font-bold">Homepage Images</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+              <ImageUpload 
+                label="Về 360 SPORT (Ảnh cầu thủ)"
+                currentImageUrl={formData.aboutImage}
+                onUploadComplete={(url) => setFormData(prev => ({ ...prev, aboutImage: url }))}
+                folder="settings"
+              />
+            </div>
+            <div>
+              <ImageUpload 
+                label="Banner Thông tin (Ảnh nền xanh)"
+                currentImageUrl={formData.bannerImage}
+                onUploadComplete={(url) => setFormData(prev => ({ ...prev, bannerImage: url }))}
+                folder="settings"
+              />
+            </div>
+            <div>
+              <ImageUpload 
+                label="Banner Đồng hành (Ảnh cuối trang)"
+                currentImageUrl={formData.partnerBannerImage}
+                onUploadComplete={(url) => setFormData(prev => ({ ...prev, partnerBannerImage: url }))}
+                folder="settings"
+              />
+            </div>
+            <div>
+              <ImageUpload 
+                label="Ảnh Đặc điểm nổi bật (Ảnh cầu thủ bên dưới)"
+                currentImageUrl={formData.productHighlightImage}
+                onUploadComplete={(url) => setFormData(prev => ({ ...prev, productHighlightImage: url }))}
+                folder="settings"
               />
             </div>
           </div>

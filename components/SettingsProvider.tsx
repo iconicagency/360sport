@@ -10,6 +10,10 @@ interface SiteSettings {
   heroTitle: string;
   heroSubtitle: string;
   heroImage: string;
+  aboutImage: string;
+  bannerImage: string;
+  partnerBannerImage: string;
+  productHighlightImage: string;
   contactPhone: string;
   contactEmail: string;
   contactAddress: string;
@@ -25,6 +29,10 @@ const defaultSettings: SiteSettings = {
   heroTitle: 'THỨC UỐNG TĂNG LỰC BÙ KHOÁNG BÙ ĐIỆN GIẢI',
   heroSubtitle: 'Sản phẩm 360 SPORT được nghiên cứu dựa trên thể trạng và nhu cầu của người Việt. Bổ sung năng lượng tức thì, hỗ trợ phục hồi cơ bắp sau tập luyện.',
   heroImage: 'https://picsum.photos/seed/360sport-hero/1920/800',
+  aboutImage: 'https://picsum.photos/seed/soccer-kick/1000/1000',
+  bannerImage: 'https://picsum.photos/seed/runner-blue/1920/800',
+  partnerBannerImage: 'https://picsum.photos/seed/360sport-banner/1200/600',
+  productHighlightImage: 'https://picsum.photos/seed/360sport-player/800/800',
   contactPhone: '090 123 4567',
   contactEmail: 'contact@360sport.vn',
   contactAddress: '123 Đường Thể Thao, Quận 1, TP. Hồ Chí Minh',

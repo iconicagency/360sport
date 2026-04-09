@@ -79,30 +79,38 @@ export default function ImportPage() {
         const imageUrl = thumbId ? attachments.get(String(thumbId)) : 'https://picsum.photos/seed/sport/800/600';
 
         if (postType === 'post') {
+          const postDate = item['wp:post_date'] ? new Date(item['wp:post_date']) : new Date();
+          const validDate = isNaN(postDate.getTime()) ? new Date() : postDate;
+          
           await addDoc(collection(db, 'blogPosts'), {
-            title: item['title'] || 'Không tiêu đề',
+            title: (item['title'] || 'Không tiêu đề').toString().substring(0, 490),
             content: item['content:encoded'] || '',
-            excerpt: item['excerpt:encoded'] || (item['content:encoded'] ? item['content:encoded'].substring(0, 150) + '...' : ''),
-            category: getCategory('category'),
-            image: imageUrl || 'https://picsum.photos/seed/blog/800/600',
-            date: new Date(item['wp:post_date']).toLocaleDateString('vi-VN'),
-            createdAt: new Date(item['wp:post_date']).toISOString(),
+            excerpt: (item['excerpt:encoded'] || (item['content:encoded'] ? item['content:encoded'].substring(0, 150) + '...' : '')).toString().substring(0, 1900),
+            category: getCategory('category').toString().substring(0, 190),
+            image: (imageUrl || 'https://picsum.photos/seed/blog/800/600').toString().substring(0, 990),
+            date: validDate.toLocaleDateString('vi-VN'),
+            createdAt: validDate.toISOString(),
             authorId: auth.currentUser?.uid || 'imported'
           });
           postsCount++;
         } else if (postType === 'product') {
-          const price = getMeta('_price') || getMeta('_regular_price') || 0;
-          const salePrice = getMeta('_sale_price');
+          const rawPrice = getMeta('_price') || getMeta('_regular_price') || 0;
+          const price = isNaN(Number(rawPrice)) ? 0 : Number(rawPrice);
+          const rawSalePrice = getMeta('_sale_price');
+          const salePrice = rawSalePrice && !isNaN(Number(rawSalePrice)) ? Number(rawSalePrice) : null;
           
+          const postDate = item['wp:post_date'] ? new Date(item['wp:post_date']) : new Date();
+          const validDate = isNaN(postDate.getTime()) ? new Date() : postDate;
+
           await addDoc(collection(db, 'products'), {
-            name: item['title'] || 'Sản phẩm không tiêu đề',
+            name: (item['title'] || 'Sản phẩm không tiêu đề').toString().substring(0, 490),
             description: item['content:encoded'] || '',
-            price: Number(price),
-            originalPrice: salePrice ? Number(price) : null,
-            category: getCategory('product_cat'),
+            price: price,
+            originalPrice: salePrice,
+            category: getCategory('product_cat').toString().substring(0, 190),
             stock: 10, // Default stock
-            image: imageUrl || 'https://picsum.photos/seed/product/800/600',
-            createdAt: new Date(item['wp:post_date']).toISOString()
+            image: (imageUrl || 'https://picsum.photos/seed/product/800/600').toString().substring(0, 990),
+            createdAt: validDate.toISOString()
           });
           productsCount++;
         }

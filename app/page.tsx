@@ -149,8 +149,8 @@ export default function Home() {
               <div className="lg:w-1/2 relative mt-10 lg:mt-0">
                 <div className="relative h-[500px] md:h-[700px] w-full lg:scale-125 lg:translate-x-10">
                   <Image 
-                    src="https://picsum.photos/seed/soccer-kick/1000/1000" 
-                    alt="Soccer Player Kicking" 
+                    src={settings.aboutImage} 
+                    alt="About 360 SPORT" 
                     fill 
                     className="object-contain drop-shadow-2xl"
                   />
@@ -192,7 +192,7 @@ export default function Home() {
         <section className="relative bg-brand-blue text-white overflow-hidden py-20 md:py-32">
           <div className="absolute inset-0 z-0">
             <Image 
-              src="https://picsum.photos/seed/runner-blue/1920/800" 
+              src={settings.bannerImage} 
               alt="Runner Background" 
               fill 
               className="object-cover opacity-30 mix-blend-overlay"
@@ -284,7 +284,7 @@ export default function Home() {
             <div className="bg-gray-900 rounded-2xl overflow-hidden relative">
               <div className="absolute inset-0 z-0">
                 <Image 
-                  src="https://picsum.photos/seed/360sport-banner/1200/600" 
+                  src={settings.partnerBannerImage} 
                   alt="Banner" 
                   fill 
                   className="object-cover opacity-50"
@@ -317,7 +317,7 @@ export default function Home() {
               <div className="lg:w-1/2 relative">
                 <div className="relative h-[400px] md:h-[600px] w-full">
                   <Image 
-                    src="https://picsum.photos/seed/360sport-player/800/800" 
+                    src={settings.productHighlightImage} 
                     alt="360 SPORT Player" 
                     fill 
                     className="object-contain"
