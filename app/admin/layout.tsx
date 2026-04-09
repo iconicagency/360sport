@@ -3,7 +3,7 @@
 import { useAuth } from '@/components/FirebaseProvider';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Package, FileText, ShoppingCart, LogOut, Mail, Lock, Users } from 'lucide-react';
+import { LayoutDashboard, Package, FileText, ShoppingCart, LogOut, Mail, Lock, Users, Upload } from 'lucide-react';
 import { useState } from 'react';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -197,6 +197,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: 'Blog Posts', href: '/admin/blog', icon: FileText },
     { name: 'Orders', href: '/admin/orders', icon: ShoppingCart },
     { name: 'Users', href: '/admin/users', icon: Users },
+    { name: 'Import', href: '/admin/import', icon: Upload },
     { name: 'Settings', href: '/admin/settings', icon: Lock },
   ];
 

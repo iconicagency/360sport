@@ -102,6 +102,9 @@ export default function AdminBlog() {
                     {post.date}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <Link href={`/blog/${post.id}`} target="_blank" className="text-gray-400 hover:text-gray-600 mr-4 inline-block" title="Xem trên trang web">
+                      <FileText className="w-5 h-5" />
+                    </Link>
                     <Link href={`/admin/blog/${post.id}`} className="text-blue-600 hover:text-blue-900 mr-4 inline-block">
                       <Edit className="w-5 h-5" />
                     </Link>

@@ -45,7 +45,7 @@ export default function BlogPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {allPosts.map((post) => (
             <div key={post.id} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col">
-              <Link href="#" className="relative h-56 overflow-hidden group">
+              <Link href={`/blog/${post.id}`} className="relative h-56 overflow-hidden group">
                 <div className="absolute top-4 left-4 z-10 bg-brand-blue text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
                   {post.category}
                 </div>
@@ -60,10 +60,10 @@ export default function BlogPage() {
               <div className="p-6 flex flex-col flex-grow">
                 <div className="text-sm text-gray-500 mb-3 font-medium">{post.date}</div>
                 <h2 className="text-xl font-bold mb-3 line-clamp-2 hover:text-brand-blue transition-colors leading-snug">
-                  <Link href="#">{post.title}</Link>
+                  <Link href={`/blog/${post.id}`}>{post.title}</Link>
                 </h2>
                 <p className="text-gray-600 line-clamp-3 mb-4 flex-grow">{post.excerpt}</p>
-                <Link href="#" className="text-brand-blue font-bold text-sm uppercase tracking-wider hover:underline flex items-center gap-1 mt-auto">
+                <Link href={`/blog/${post.id}`} className="text-brand-blue font-bold text-sm uppercase tracking-wider hover:underline flex items-center gap-1 mt-auto">
                   Đọc tiếp &rarr;
                 </Link>
               </div>
