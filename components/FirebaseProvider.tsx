@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState } from 'react';
-import { User, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
+import { User, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, db } from '../lib/firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 
@@ -10,6 +10,8 @@ interface AuthContextType {
   isAdmin: boolean;
   loading: boolean;
   signInWithGoogle: () => Promise<void>;
+  loginWithEmail: (email: string, pass: string) => Promise<void>;
+  registerWithEmail: (email: string, pass: string) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -18,6 +20,8 @@ const AuthContext = createContext<AuthContextType>({
   isAdmin: false,
   loading: true,
   signInWithGoogle: async () => {},
+  loginWithEmail: async () => {},
+  registerWithEmail: async () => {},
   logout: async () => {},
 });
 
@@ -39,10 +43,10 @@ export function FirebaseProvider({ children }: { children: React.ReactNode }) {
           await setDoc(userRef, {
             uid: currentUser.uid,
             email: currentUser.email,
-            role: 'customer',
+            role: currentUser.email === 'thanhnt.ads@gmail.com' ? 'admin' : 'customer',
             createdAt: new Date().toISOString()
           });
-          setIsAdmin(false);
+          setIsAdmin(currentUser.email === 'thanhnt.ads@gmail.com');
         } else {
           setIsAdmin(userSnap.data().role === 'admin' || currentUser.email === 'thanhnt.ads@gmail.com');
         }
@@ -61,6 +65,25 @@ export function FirebaseProvider({ children }: { children: React.ReactNode }) {
       await signInWithPopup(auth, provider);
     } catch (error) {
       console.error("Error signing in with Google", error);
+      throw error;
+    }
+  };
+
+  const loginWithEmail = async (email: string, pass: string) => {
+    try {
+      await signInWithEmailAndPassword(auth, email, pass);
+    } catch (error) {
+      console.error("Error signing in with email", error);
+      throw error;
+    }
+  };
+
+  const registerWithEmail = async (email: string, pass: string) => {
+    try {
+      await createUserWithEmailAndPassword(auth, email, pass);
+    } catch (error) {
+      console.error("Error registering with email", error);
+      throw error;
     }
   };
 
@@ -73,7 +96,7 @@ export function FirebaseProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAdmin, loading, signInWithGoogle, logout }}>
+    <AuthContext.Provider value={{ user, isAdmin, loading, signInWithGoogle, loginWithEmail, registerWithEmail, logout }}>
       {children}
     </AuthContext.Provider>
   );
