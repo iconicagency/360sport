@@ -82,6 +82,10 @@
         "heroTitle": { "type": "string" },
         "heroSubtitle": { "type": "string" },
         "heroImage": { "type": "string", "format": "uri" },
+        "aboutImage": { "type": "string", "format": "uri" },
+        "bannerImage": { "type": "string", "format": "uri" },
+        "partnerBannerImage": { "type": "string", "format": "uri" },
+        "productHighlightImage": { "type": "string", "format": "uri" },
         "contactPhone": { "type": "string" },
         "contactEmail": { "type": "string" },
         "contactAddress": { "type": "string" },
@@ -89,6 +93,17 @@
         "instagramUrl": { "type": "string", "format": "uri" },
         "youtubeUrl": { "type": "string", "format": "uri" },
         "footerDescription": { "type": "string" }
+      }
+    },
+    "Page": {
+      "title": "Page",
+      "description": "Content for static pages like About or Contact.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "sections": { "type": "array" },
+        "updatedAt": { "type": "string", "format": "date-time" }
       }
     }
   },
@@ -112,6 +127,14 @@
     "/settings/{settingId}": {
       "schema": { "$ref": "#/entities/SiteSettings" },
       "description": "Stores global site settings."
+    },
+    "/pages/{pageId}": {
+      "schema": { "$ref": "#/entities/Page" },
+      "description": "Stores static page content."
+    },
+    "/categories/{categoryId}": {
+      "schema": { "type": "object" },
+      "description": "Stores categories for posts and products."
     }
   }
 }

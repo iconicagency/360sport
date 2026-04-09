@@ -39,6 +39,7 @@ export default function Header() {
           <Link href="/products" className="hover:text-brand-blue transition-colors underline-offset-4 hover:underline">SẢN PHẨM THỂ THAO</Link>
           <Link href="/about" className="hover:text-brand-blue transition-colors underline-offset-4 hover:underline">VỀ 360 SPORT</Link>
           <Link href="/blog" className="hover:text-brand-blue transition-colors underline-offset-4 hover:underline">NHỊP SỐNG 360</Link>
+          <Link href="/contact" className="hover:text-brand-blue transition-colors underline-offset-4 hover:underline">LIÊN HỆ</Link>
         </nav>
 
         {/* Actions */}

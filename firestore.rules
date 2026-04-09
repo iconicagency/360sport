@@ -79,6 +79,14 @@ service cloud.firestore {
     //   - youtubeUrl: string
     //   - footerDescription: string
     //
+    // Collection: pages
+    // Document ID: {pageId}
+    // Fields:
+    //   - title: string (required)
+    //   - content: string (required)
+    //   - sections: list (optional)
+    //   - updatedAt: string (required)
+    //
     // ===============================================================
 
     // ===============================================================
@@ -172,6 +180,13 @@ service cloud.firestore {
              isValidDateString(data.createdAt);
     }
 
+    function isValidPage(data) {
+      return hasRequiredFields(['title', 'content', 'updatedAt']) &&
+             data.title is string && data.title.size() > 0 && data.title.size() < 200 &&
+             data.content is string && data.content.size() >= 0 && data.content.size() < 200000 &&
+             isValidDateString(data.updatedAt);
+    }
+
     // ===============================================================
     // Rules
     // ===============================================================
@@ -218,6 +233,11 @@ service cloud.firestore {
     match /settings/{settingId} {
       allow read: if true;
       allow write: if isAdmin();
+    }
+
+    match /pages/{pageId} {
+      allow read: if true;
+      allow write: if isAdmin() && isValidPage(request.resource.data);
     }
   }
 }

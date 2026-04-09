@@ -1,9 +1,75 @@
+'use client';
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Image from "next/image";
-import { CheckCircle2, ShieldCheck, Zap, Droplets, HeartPulse, Activity, Target } from "lucide-react";
+import { CheckCircle2, ShieldCheck, Zap, Droplets, HeartPulse, Activity, Target, Loader2 } from "lucide-react";
+import { useState, useEffect } from 'react';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
 
 export default function AboutPage() {
+  const [pageData, setPageData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchPage() {
+      try {
+        const docRef = doc(db, 'pages', 'about');
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setPageData(docSnap.data());
+        }
+      } catch (error) {
+        console.error("Error fetching about page:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchPage();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <Loader2 className="animate-spin h-12 w-12 text-blue-600" />
+      </div>
+    );
+  }
+
+  // If dynamic content exists, render it. Otherwise render the default static content.
+  if (pageData && pageData.content) {
+    return (
+      <div className="min-h-screen flex flex-col font-sans text-gray-900 bg-gray-50">
+        <Header />
+        <main className="flex-grow">
+          <div className="relative bg-brand-blue text-white py-24 md:py-32 overflow-hidden">
+            <div className="absolute inset-0 z-0">
+              <Image 
+                src="https://picsum.photos/seed/360about-hero/1920/800" 
+                alt="About Hero" 
+                fill 
+                className="object-cover opacity-20 mix-blend-overlay"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-brand-blue to-transparent"></div>
+            </div>
+            <div className="container mx-auto px-4 relative z-10 text-center">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 uppercase tracking-tight">{pageData.title}</h1>
+              <div className="w-24 h-1.5 bg-brand-blue mx-auto rounded-full mb-6"></div>
+            </div>
+          </div>
+
+          <section className="py-16 md:py-24 bg-white">
+            <div className="container mx-auto px-4 max-w-4xl">
+              <div className="prose prose-lg max-w-none text-gray-700" dangerouslySetInnerHTML={{ __html: pageData.content }}></div>
+            </div>
+          </section>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex flex-col font-sans text-gray-900 bg-gray-50">
       <Header />
