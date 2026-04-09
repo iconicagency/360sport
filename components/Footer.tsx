@@ -1,10 +1,17 @@
 'use client';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Facebook, Instagram, Youtube, MapPin, Phone, Mail } from 'lucide-react';
 import { useSettings } from './SettingsProvider';
 
 export default function Footer() {
   const { settings } = useSettings();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
 
   return (
     <footer className="bg-gray-900 text-gray-300 pt-16 pb-8">
@@ -69,25 +76,30 @@ export default function Footer() {
           <div>
             <h3 className="text-white font-bold text-lg mb-6 uppercase tracking-wider">Đăng Ký Nhận Tin</h3>
             <p className="text-sm mb-4">Nhận thông tin khuyến mãi và sản phẩm mới nhất từ 360 SPORT.</p>
-            <form className="flex flex-col gap-3" suppressHydrationWarning>
-              <input 
-                type="email" 
-                placeholder="Email của bạn" 
-                className="px-4 py-2 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:border-brand-blue text-white text-sm"
-                suppressHydrationWarning
-              />
-              <button 
-                type="button"
-                className="bg-brand-blue text-white px-4 py-2 rounded font-medium hover:bg-brand-dark-blue transition-colors text-sm uppercase tracking-wider"
-              >
-                Đăng ký
-              </button>
+            <form className="flex flex-col gap-3">
+              {mounted ? (
+                <>
+                  <input 
+                    type="email" 
+                    placeholder="Email của bạn" 
+                    className="px-4 py-2 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:border-brand-blue text-white text-sm"
+                  />
+                  <button 
+                    type="button"
+                    className="bg-brand-blue text-white px-4 py-2 rounded font-medium hover:bg-brand-dark-blue transition-colors text-sm uppercase tracking-wider"
+                  >
+                    Đăng ký
+                  </button>
+                </>
+              ) : (
+                <div className="h-20 bg-gray-800/50 animate-pulse rounded"></div>
+              )}
             </form>
           </div>
         </div>
 
         <div className="border-t border-gray-800 pt-8 mt-8 text-center text-sm text-gray-500">
-          <p>&copy; {new Date().getFullYear()} 360 SPORT. Tất cả quyền được bảo lưu.</p>
+          <p>&copy; {mounted ? new Date().getFullYear() : '2026'} 360 SPORT. Tất cả quyền được bảo lưu.</p>
         </div>
       </div>
     </footer>
